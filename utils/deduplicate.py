@@ -3,6 +3,7 @@ import json
 import os
 from typing import List, Dict, Any
 from datetime import datetime, timedelta
+import hashlib
 
 class Deduplicator:
     def __init__(self, config):
@@ -60,3 +61,56 @@ class Deduplicator:
             self.logger.info(f"Found {len(new_items)} new items")
             
         return new_items 
+
+def deduplicate_stories(articles: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    Deduplicate news articles based on content similarity.
+    
+    Args:
+        articles: List of news articles to deduplicate
+        
+    Returns:
+        List of unique articles
+    """
+    # Create a set to store unique content hashes
+    seen_hashes = set()
+    unique_articles = []
+    
+    for article in articles:
+        # Create a hash of the title and first 100 characters of content
+        content_to_hash = f"{article['title']}{article['content'][:100]}"
+        content_hash = hashlib.md5(content_to_hash.encode()).hexdigest()
+        
+        # If we haven't seen this content before, add it to our results
+        if content_hash not in seen_hashes:
+            seen_hashes.add(content_hash)
+            unique_articles.append(article)
+    
+    return unique_articles
+
+if __name__ == "__main__":
+    # Test the deduplication with sample data
+    test_articles = [
+        {
+            "title": "Test Article 1",
+            "content": "This is a test article",
+            "source": "Test Source",
+            "published": datetime.now()
+        },
+        {
+            "title": "Test Article 1",  # Duplicate title
+            "content": "This is a test article",  # Duplicate content
+            "source": "Different Source",
+            "published": datetime.now()
+        },
+        {
+            "title": "Test Article 2",
+            "content": "This is a different article",
+            "source": "Test Source",
+            "published": datetime.now()
+        }
+    ]
+    
+    unique = deduplicate_stories(test_articles)
+    print(f"Original articles: {len(test_articles)}")
+    print(f"Unique articles: {len(unique)}") 
