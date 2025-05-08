@@ -165,14 +165,16 @@ with st.sidebar:
         agent_name = st.text_input("Agent Name")
         agent_category = st.selectbox("Category", list(all_categories.keys()))
         agent_keywords = st.text_input("Keywords (comma-separated)")
-        agent_frequency = st.number_input("Frequency (hours)", min_value=1, max_value=168, value=6)
+        agent_frequency_min = st.number_input("Frequency (minutes)", min_value=0, max_value=1440, value=0, help="Set to 0 to disable minute-based scheduling.")
+        agent_frequency_hr = st.number_input("Frequency (hours)", min_value=0, max_value=168, value=6, help="Set to 0 to disable hour-based scheduling.")
         agent_enabled = st.checkbox("Enabled", value=True)
         if st.form_submit_button("Add Agent"):
             new_agent = {
                 "name": agent_name,
                 "category": agent_category,
                 "keywords": [k.strip() for k in agent_keywords.split(",") if k.strip()],
-                "frequency_hours": agent_frequency,
+                "frequency_minutes": int(agent_frequency_min),
+                "frequency_hours": int(agent_frequency_hr),
                 "enabled": agent_enabled
             }
             agents.append(new_agent)
@@ -283,7 +285,10 @@ def run_scheduler():
     agents = load_agents()
     for agent in agents:
         if agent.get('enabled'):
-            schedule.every(int(agent['frequency_hours'])).hours.do(agent_task, agent)
+            if agent.get('frequency_minutes', 0) > 0:
+                schedule.every(int(agent['frequency_minutes'])).minutes.do(agent_task, agent)
+            elif agent.get('frequency_hours', 0) > 0:
+                schedule.every(int(agent['frequency_hours'])).hours.do(agent_task, agent)
     while True:
         schedule.run_pending()
         time.sleep(60)
