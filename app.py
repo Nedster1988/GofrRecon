@@ -104,7 +104,7 @@ with st.sidebar:
                     feeds_list
                 )
                 st.success("Category added successfully!")
-                st.experimental_rerun()
+                st.rerun()
     
     # Manage existing categories
     st.markdown("---")
@@ -121,14 +121,14 @@ with st.sidebar:
                     feeds_list = [feed.strip() for feed in new_feeds.split('\n') if feed.strip()]
                     news_manager.update_category_feeds(category_id, feeds_list)
                     st.success("Category updated!")
-                    st.experimental_rerun()
+                    st.rerun()
             
             with col2:
                 if category_id in (news_manager.config.get("custom_categories") or {}):
                     if st.button("Delete", key=f"delete_{category_id}"):
                         news_manager.remove_custom_category(category_id)
                         st.success("Category deleted!")
-                        st.experimental_rerun()
+                        st.rerun()
     
     st.markdown("---")
     st.markdown("### About")
