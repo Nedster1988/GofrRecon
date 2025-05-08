@@ -1,0 +1,35 @@
+# Default news categories and their RSS feeds
+default_categories:
+  tech:
+    name: "Technology"
+    description: "General technology news and updates"
+    feeds:
+      - "https://techcrunch.com/feed/"
+      - "https://www.theverge.com/rss/index.xml"
+      - "https://www.wired.com/feed/rss"
+  
+  security:
+    name: "Cybersecurity"
+    description: "Security news and threat intelligence"
+    feeds:
+      - "https://krebsonsecurity.com/feed/"
+      - "https://www.bleepingcomputer.com/feed/"
+      - "https://www.darkreading.com/rss.xml"
+  
+  ai:
+    name: "Artificial Intelligence"
+    description: "AI and machine learning news"
+    feeds:
+      - "https://www.artificialintelligence-news.com/feed/"
+      - "https://www.unite.ai/feed/"
+      - "https://www.analyticsinsight.net/feed/"
+
+# Custom categories can be added here
+custom_categories:
+  # Example custom category
+  # healthcare:
+  #   name: "Healthcare"
+  #   description: "Healthcare industry news"
+  #   feeds:
+  #     - "https://example.com/healthcare/feed"
+  #     - "https://another-healthcare-news.com/rss" 

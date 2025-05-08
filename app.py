@@ -8,10 +8,14 @@ from pathlib import Path
 project_root = Path(__file__).parent
 sys.path.append(str(project_root))
 
-# Import our modules (these will be created later)
+# Import our modules
 from sources.rss_parser import fetch_news
 from ai.summarizer import summarize_news
 from utils.deduplicate import deduplicate_stories
+from sources.news_manager import NewsSourceManager
+
+# Initialize news source manager
+news_manager = NewsSourceManager()
 
 # Set page configuration
 st.set_page_config(
@@ -68,11 +72,63 @@ with st.sidebar:
         max_value=datetime.now()
     )
     
-    # Source selection (placeholder for now)
+    # News source management
     st.subheader("News Sources")
-    st.checkbox("Tech News", value=True)
-    st.checkbox("Business News", value=True)
-    st.checkbox("Security News", value=True)
+    
+    # Get all categories
+    all_categories = news_manager.get_all_categories()
+    
+    # Display category checkboxes
+    selected_categories = []
+    for category_id, info in all_categories.items():
+        if st.checkbox(f"{info['name']} ({category_id})", value=True):
+            selected_categories.append(category_id)
+    
+    # Add new category
+    st.markdown("---")
+    st.subheader("Add New Category")
+    
+    with st.form("add_category"):
+        new_category_id = st.text_input("Category ID (e.g., 'finance')")
+        new_category_name = st.text_input("Category Name (e.g., 'Finance News')")
+        new_category_desc = st.text_area("Description")
+        new_feeds = st.text_area("RSS Feeds (one per line)")
+        
+        if st.form_submit_button("Add Category"):
+            if new_category_id and new_category_name and new_feeds:
+                feeds_list = [feed.strip() for feed in new_feeds.split('\n') if feed.strip()]
+                news_manager.add_custom_category(
+                    new_category_id,
+                    new_category_name,
+                    new_category_desc,
+                    feeds_list
+                )
+                st.success("Category added successfully!")
+                st.experimental_rerun()
+    
+    # Manage existing categories
+    st.markdown("---")
+    st.subheader("Manage Categories")
+    
+    for category_id, info in all_categories.items():
+        with st.expander(f"Edit {info['name']}"):
+            current_feeds = "\n".join(info['feeds'])
+            new_feeds = st.text_area("RSS Feeds", current_feeds, key=f"edit_{category_id}")
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button("Update", key=f"update_{category_id}"):
+                    feeds_list = [feed.strip() for feed in new_feeds.split('\n') if feed.strip()]
+                    news_manager.update_category_feeds(category_id, feeds_list)
+                    st.success("Category updated!")
+                    st.experimental_rerun()
+            
+            with col2:
+                if category_id in news_manager.config.get("custom_categories", {}):
+                    if st.button("Delete", key=f"delete_{category_id}"):
+                        news_manager.remove_custom_category(category_id)
+                        st.success("Category deleted!")
+                        st.experimental_rerun()
     
     st.markdown("---")
     st.markdown("### About")
@@ -85,17 +141,21 @@ st.header("News Intelligence Dashboard")
 if st.button("🚀 Run Recon", use_container_width=True):
     with st.spinner("Gathering and analyzing news..."):
         try:
-            # Fetch news (will be implemented in rss_parser.py)
-            news_items = fetch_news()
+            # Fetch news from selected categories
+            articles = fetch_news(
+                sources=selected_categories,
+                start_date=datetime.combine(date_range[0], datetime.min.time()),
+                end_date=datetime.combine(date_range[1], datetime.max.time())
+            )
             
-            # Deduplicate stories (will be implemented in deduplicate.py)
-            unique_stories = deduplicate_stories(news_items)
+            # Deduplicate stories
+            unique_stories = deduplicate_stories(articles)
             
-            # Summarize news (will be implemented in summarizer.py)
+            # Summarize news
             summarized_news = summarize_news(unique_stories)
             
             # Display results
-            st.success("✅ Analysis complete!")
+            st.success(f"✅ Analysis complete! Found {len(summarized_news)} unique articles.")
             
             # Display summarized news in cards
             for story in summarized_news:
@@ -105,6 +165,7 @@ if st.button("🚀 Run Recon", use_container_width=True):
                         <h3>{story['title']}</h3>
                         <p><strong>Source:</strong> {story['source']}</p>
                         <p><strong>Published:</strong> {story['published']}</p>
+                        <p><strong>Category:</strong> {story['category']}</p>
                         <p>{story['summary']}</p>
                         <a href="{story['url']}" target="_blank">Read more</a>
                     </div>
@@ -112,7 +173,6 @@ if st.button("🚀 Run Recon", use_container_width=True):
                     
         except Exception as e:
             st.error(f"An error occurred: {str(e)}")
-            st.info("This is expected as the supporting modules haven't been implemented yet.")
 
 # Footer
 st.markdown("---")
