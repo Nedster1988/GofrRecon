@@ -13,6 +13,13 @@ import os
 AGENTS_CONFIG_PATH = "config/agents.yaml"
 INBOX_PATH = "data/agent_inbox.json"
 
+def serialize_article(article):
+    # Convert any datetime fields to ISO strings
+    article = article.copy()
+    if isinstance(article.get('published'), datetime):
+        article['published'] = article['published'].isoformat()
+    return article
+
 def agent_task(agent):
     # Ensure the data directory exists
     os.makedirs(os.path.dirname(INBOX_PATH), exist_ok=True)
@@ -27,6 +34,7 @@ def agent_task(agent):
             inbox = json.load(f)
     except Exception:
         inbox = []
+    articles = [serialize_article(a) for a in articles]
     inbox.append({
         "agent": agent['name'],
         "categories": agent.get('categories', [agent.get('category', 'unknown')]),
