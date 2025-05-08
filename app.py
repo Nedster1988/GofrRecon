@@ -8,11 +8,14 @@ import threading
 import time
 import schedule
 import json
+import os
 
 AGENTS_CONFIG_PATH = "config/agents.yaml"
 INBOX_PATH = "data/agent_inbox.json"
 
 def agent_task(agent):
+    # Ensure the data directory exists
+    os.makedirs(os.path.dirname(INBOX_PATH), exist_ok=True)
     # Fetch news for the agent's category and keywords
     articles = fetch_news(sources=agent.get('categories', [agent.get('category', 'unknown')]))
     # Filter by keywords if specified
