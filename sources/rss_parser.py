@@ -3,90 +3,130 @@ import feedparser
 from datetime import datetime, timedelta
 import random
 from typing import List, Dict, Any
+from urllib.parse import urlparse
+import requests
+from bs4 import BeautifulSoup
 
-# Mock RSS feed data
-MOCK_FEEDS = {
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Define some common tech and security news RSS feeds
+DEFAULT_FEEDS = {
     "tech": [
-        {
-            "title": "OpenAI Announces GPT-5 Development",
-            "url": "https://example.com/openai-gpt5",
-            "source": "Tech Daily",
-            "published": datetime.now() - timedelta(hours=2),
-            "content": "OpenAI has officially announced the development of GPT-5, promising significant improvements in reasoning and multimodal capabilities. The new model is expected to be released in late 2024.",
-            "category": "AI"
-        },
-        {
-            "title": "Microsoft Unveils New AI Copilot Features",
-            "url": "https://example.com/microsoft-copilot",
-            "source": "Tech Insider",
-            "published": datetime.now() - timedelta(hours=5),
-            "content": "Microsoft has expanded its AI Copilot capabilities across its product suite, introducing new features for developers and enterprise users. The update includes enhanced code generation and documentation tools.",
-            "category": "AI"
-        }
+        "https://techcrunch.com/feed/",
+        "https://www.theverge.com/rss/index.xml",
+        "https://www.wired.com/feed/rss"
     ],
     "security": [
-        {
-            "title": "Major Cloud Provider Suffers Data Breach",
-            "url": "https://example.com/cloud-breach",
-            "source": "Security Weekly",
-            "published": datetime.now() - timedelta(hours=1),
-            "content": "A leading cloud service provider has reported a significant data breach affecting thousands of enterprise customers. The incident appears to be related to a sophisticated supply chain attack.",
-            "category": "Cybersecurity"
-        },
-        {
-            "title": "New Zero-Day Vulnerability Found in Popular Framework",
-            "url": "https://example.com/zero-day",
-            "source": "Security News",
-            "published": datetime.now() - timedelta(hours=3),
-            "content": "Security researchers have discovered a critical zero-day vulnerability in a widely used web framework. The flaw could allow remote code execution and affects multiple versions.",
-            "category": "Vulnerabilities"
-        }
+        "https://krebsonsecurity.com/feed/",
+        "https://www.bleepingcomputer.com/feed/",
+        "https://www.darkreading.com/rss.xml"
     ],
-    "business": [
-        {
-            "title": "Tech Giant Acquires AI Startup for $500M",
-            "url": "https://example.com/tech-acquisition",
-            "source": "Business Insider",
-            "published": datetime.now() - timedelta(hours=4),
-            "content": "A major technology company has acquired an AI startup specializing in natural language processing for $500 million. The deal is expected to accelerate the company's AI initiatives.",
-            "category": "M&A"
-        },
-        {
-            "title": "New AI Regulations Proposed in EU",
-            "url": "https://example.com/ai-regulations",
-            "source": "Business Times",
-            "published": datetime.now() - timedelta(hours=6),
-            "content": "The European Union has proposed new regulations governing the development and deployment of artificial intelligence systems. The framework aims to balance innovation with safety and ethical considerations.",
-            "category": "Regulation"
-        }
+    "ai": [
+        "https://www.artificialintelligence-news.com/feed/",
+        "https://www.unite.ai/feed/",
+        "https://www.analyticsinsight.net/feed/"
     ]
 }
+
+def clean_html_content(html_content: str) -> str:
+    """Clean HTML content and extract text."""
+    if not html_content:
+        return ""
+    try:
+        soup = BeautifulSoup(html_content, 'html.parser')
+        return soup.get_text(separator=' ', strip=True)
+    except Exception as e:
+        logger.error(f"Error cleaning HTML content: {str(e)}")
+        return html_content
+
+def parse_feed_entry(entry: Dict[str, Any], source_url: str) -> Dict[str, Any]:
+    """Parse a single feed entry into our standard format."""
+    try:
+        # Get the domain name for the source
+        domain = urlparse(source_url).netloc
+        
+        # Extract content
+        content = entry.get('content', [{'value': ''}])[0].get('value', '')
+        if not content:
+            content = entry.get('summary', '')
+        
+        # Clean the content
+        content = clean_html_content(content)
+        
+        # Parse published date
+        published = entry.get('published_parsed', None)
+        if published:
+            published = datetime(*published[:6])
+        else:
+            published = datetime.now()
+        
+        return {
+            "title": entry.get('title', 'No Title'),
+            "url": entry.get('link', ''),
+            "source": domain,
+            "published": published,
+            "content": content,
+            "category": next((cat for cat, urls in DEFAULT_FEEDS.items() if source_url in urls), "other")
+        }
+    except Exception as e:
+        logger.error(f"Error parsing feed entry: {str(e)}")
+        return None
 
 def fetch_news(
     sources: List[str] = None,
     start_date: datetime = None,
-    end_date: datetime = None
+    end_date: datetime = None,
+    custom_feeds: Dict[str, List[str]] = None
 ) -> List[Dict[str, Any]]:
     """
-    Fetch news articles from RSS feeds (currently returns mock data).
+    Fetch news articles from RSS feeds.
     
     Args:
-        sources: List of source categories to fetch (e.g., ['tech', 'security', 'business'])
+        sources: List of source categories to fetch (e.g., ['tech', 'security', 'ai'])
         start_date: Start date for filtering articles
         end_date: End date for filtering articles
+        custom_feeds: Dictionary of custom feed URLs to add to the default feeds
         
     Returns:
         List of news articles with title, url, source, published date, and content
     """
+    # Combine default and custom feeds
+    all_feeds = DEFAULT_FEEDS.copy()
+    if custom_feeds:
+        for category, urls in custom_feeds.items():
+            all_feeds.setdefault(category, []).extend(urls)
+    
     # If no sources specified, use all available
     if not sources:
-        sources = list(MOCK_FEEDS.keys())
+        sources = list(all_feeds.keys())
     
-    # Collect articles from specified sources
     articles = []
-    for source in sources:
-        if source in MOCK_FEEDS:
-            articles.extend(MOCK_FEEDS[source])
+    
+    # Fetch from each feed
+    for category in sources:
+        if category not in all_feeds:
+            logger.warning(f"Unknown category: {category}")
+            continue
+            
+        for feed_url in all_feeds[category]:
+            try:
+                logger.info(f"Fetching feed: {feed_url}")
+                feed = feedparser.parse(feed_url)
+                
+                if feed.bozo:  # Check for feed parsing errors
+                    logger.warning(f"Feed parsing error for {feed_url}: {feed.bozo_exception}")
+                    continue
+                
+                for entry in feed.entries:
+                    article = parse_feed_entry(entry, feed_url)
+                    if article:
+                        articles.append(article)
+                        
+            except Exception as e:
+                logger.error(f"Error fetching feed {feed_url}: {str(e)}")
+                continue
     
     # Filter by date if specified
     if start_date or end_date:
@@ -140,11 +180,15 @@ class RSSParser:
         return all_items 
 
 if __name__ == "__main__":
-    # Test the function
-    articles = fetch_news()
-    print(f"Fetched {len(articles)} articles")
-    for article in articles:
+    # Test the RSS parser
+    print("Testing RSS feed fetching...")
+    articles = fetch_news(sources=['tech', 'security'])
+    print(f"\nFetched {len(articles)} articles")
+    
+    # Display first 3 articles
+    for article in articles[:3]:
         print(f"\nTitle: {article['title']}")
         print(f"Source: {article['source']}")
         print(f"Published: {article['published']}")
-        print(f"Category: {article['category']}") 
+        print(f"Category: {article['category']}")
+        print(f"Content preview: {article['content'][:200]}...") 
