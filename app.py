@@ -4,8 +4,13 @@ from datetime import datetime, timedelta
 import sys
 from pathlib import Path
 import yaml
+import threading
+import time
+import schedule
+import json
 
 AGENTS_CONFIG_PATH = "config/agents.yaml"
+INBOX_PATH = "data/agent_inbox.json"
 
 def load_agents():
     try:
@@ -195,6 +200,22 @@ with st.sidebar:
 # Main content area
 st.header("News Intelligence Dashboard")
 
+# Agent Inbox Section
+st.subheader("Agent Inbox")
+try:
+    with open(INBOX_PATH, "r") as f:
+        inbox = json.load(f)
+except Exception:
+    inbox = []
+if inbox:
+    for entry in reversed(inbox[-10:]):  # Show last 10 agent runs
+        st.markdown(f"**Agent:** {entry['agent']} | **Category:** {entry['category']} | **Time:** {entry['timestamp']}")
+        for article in entry['results'][:3]:  # Show up to 3 articles per run
+            st.markdown(f"- [{article['title']}]({article['url']})")
+        st.markdown("---")
+else:
+    st.info("No agent findings yet.")
+
 # Run Recon button
 if st.button("🚀 Run Recon", use_container_width=True):
     with st.spinner("Gathering and analyzing news..."):
@@ -235,4 +256,43 @@ if st.button("🚀 Run Recon", use_container_width=True):
 
 # Footer
 st.markdown("---")
-st.markdown("Gofr Recon | Powered by Streamlit and OpenAI") 
+st.markdown("Gofr Recon | Powered by Streamlit and OpenAI")
+
+def agent_task(agent):
+    # Fetch news for the agent's category and keywords
+    articles = fetch_news(sources=[agent['category']])
+    # Filter by keywords if specified
+    if agent['keywords']:
+        articles = [a for a in articles if any(k.lower() in a['title'].lower() or k.lower() in a.get('content', '').lower() for k in agent['keywords'])]
+    # Store findings in inbox
+    try:
+        with open(INBOX_PATH, "r") as f:
+            inbox = json.load(f)
+    except Exception:
+        inbox = []
+    inbox.append({
+        "agent": agent['name'],
+        "category": agent['category'],
+        "timestamp": datetime.now().isoformat(),
+        "results": articles
+    })
+    with open(INBOX_PATH, "w") as f:
+        json.dump(inbox, f)
+
+def run_scheduler():
+    agents = load_agents()
+    for agent in agents:
+        if agent.get('enabled'):
+            schedule.every(int(agent['frequency_hours'])).hours.do(agent_task, agent)
+    while True:
+        schedule.run_pending()
+        time.sleep(60)
+
+def start_scheduler_once():
+    if not hasattr(st.session_state, "scheduler_started"):
+        t = threading.Thread(target=run_scheduler, daemon=True)
+        t.start()
+        st.session_state.scheduler_started = True
+
+# Start the agent scheduler in the background
+start_scheduler_once() 
