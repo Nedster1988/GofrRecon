@@ -12,6 +12,27 @@ import json
 AGENTS_CONFIG_PATH = "config/agents.yaml"
 INBOX_PATH = "data/agent_inbox.json"
 
+def agent_task(agent):
+    # Fetch news for the agent's category and keywords
+    articles = fetch_news(sources=agent.get('categories', [agent.get('category', 'unknown')]))
+    # Filter by keywords if specified
+    if agent['keywords']:
+        articles = [a for a in articles if any(k.lower() in a['title'].lower() or k.lower() in a.get('content', '').lower() for k in agent['keywords'])]
+    # Store findings in inbox
+    try:
+        with open(INBOX_PATH, "r") as f:
+            inbox = json.load(f)
+    except Exception:
+        inbox = []
+    inbox.append({
+        "agent": agent['name'],
+        "categories": agent.get('categories', [agent.get('category', 'unknown')]),
+        "timestamp": datetime.now().isoformat(),
+        "results": articles
+    })
+    with open(INBOX_PATH, "w") as f:
+        json.dump(inbox, f)
+
 def load_agents():
     try:
         with open(AGENTS_CONFIG_PATH, "r") as f:
@@ -268,27 +289,6 @@ if st.button("🚀 Run Recon", use_container_width=True):
 # Footer
 st.markdown("---")
 st.markdown("Gofr Recon | Powered by Streamlit and OpenAI")
-
-def agent_task(agent):
-    # Fetch news for the agent's category and keywords
-    articles = fetch_news(sources=agent.get('categories', [agent.get('category', 'unknown')]))
-    # Filter by keywords if specified
-    if agent['keywords']:
-        articles = [a for a in articles if any(k.lower() in a['title'].lower() or k.lower() in a.get('content', '').lower() for k in agent['keywords'])]
-    # Store findings in inbox
-    try:
-        with open(INBOX_PATH, "r") as f:
-            inbox = json.load(f)
-    except Exception:
-        inbox = []
-    inbox.append({
-        "agent": agent['name'],
-        "categories": agent.get('categories', [agent.get('category', 'unknown')]),
-        "timestamp": datetime.now().isoformat(),
-        "results": articles
-    })
-    with open(INBOX_PATH, "w") as f:
-        json.dump(inbox, f)
 
 def run_scheduler():
     agents = load_agents()
