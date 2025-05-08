@@ -124,7 +124,7 @@ with st.sidebar:
                     st.experimental_rerun()
             
             with col2:
-                if category_id in news_manager.config.get("custom_categories", {}):
+                if category_id in (news_manager.config.get("custom_categories") or {}):
                     if st.button("Delete", key=f"delete_{category_id}"):
                         news_manager.remove_custom_category(category_id)
                         st.success("Category deleted!")
