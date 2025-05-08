@@ -15,7 +15,11 @@ class NewsSourceManager:
         """Load the news sources configuration file."""
         try:
             with open(self.config_path, 'r') as f:
-                return yaml.safe_load(f)
+                config = yaml.safe_load(f)
+                if not isinstance(config, dict):
+                    # If YAML is empty or not a dict, use default structure
+                    config = {"default_categories": {}, "custom_categories": {}}
+                return config
         except Exception as e:
             logger.error(f"Error loading config file: {str(e)}")
             return {"default_categories": {}, "custom_categories": {}}
