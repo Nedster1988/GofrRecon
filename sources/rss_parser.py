@@ -41,7 +41,7 @@ def clean_html_content(html_content: str) -> str:
         logger.error(f"Error cleaning HTML content: {str(e)}")
         return html_content
 
-def parse_feed_entry(entry: Dict[str, Any], source_url: str) -> Dict[str, Any]:
+def parse_feed_entry(entry: Dict[str, Any], source_url: str, category: str) -> Dict[str, Any]:
     """Parse a single feed entry into our standard format."""
     try:
         # Get the domain name for the source
@@ -68,7 +68,7 @@ def parse_feed_entry(entry: Dict[str, Any], source_url: str) -> Dict[str, Any]:
             "source": domain,
             "published": published,
             "content": content,
-            "category": next((cat for cat, urls in DEFAULT_FEEDS.items() if source_url in urls), "other")
+            "category": category
         }
     except Exception as e:
         logger.error(f"Error parsing feed entry: {str(e)}")
@@ -114,16 +114,14 @@ def fetch_news(
             try:
                 logger.info(f"Fetching feed: {feed_url}")
                 feed = feedparser.parse(feed_url)
-                
-                if feed.bozo:  # Check for feed parsing errors
+                logger.info(f"Feed '{feed_url}' returned {len(feed.entries)} entries")
+                if feed.bozo:
                     logger.warning(f"Feed parsing error for {feed_url}: {feed.bozo_exception}")
                     continue
-                
                 for entry in feed.entries:
-                    article = parse_feed_entry(entry, feed_url)
+                    article = parse_feed_entry(entry, feed_url, category)
                     if article:
                         articles.append(article)
-                        
             except Exception as e:
                 logger.error(f"Error fetching feed {feed_url}: {str(e)}")
                 continue

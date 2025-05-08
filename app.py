@@ -3,6 +3,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 import sys
 from pathlib import Path
+import yaml
 
 # Add project root to Python path
 project_root = Path(__file__).parent
@@ -134,6 +135,47 @@ with st.sidebar:
     st.markdown("### About")
     st.markdown("Gofr Recon provides real-time news intelligence and analysis using AI-powered summarization.")
 
+    st.markdown("---")
+    st.header("Recon Agents")
+
+    agents = load_agents()
+
+    with st.form("add_agent_form"):
+        agent_name = st.text_input("Agent Name")
+        agent_category = st.selectbox("Category", list(all_categories.keys()))
+        agent_keywords = st.text_input("Keywords (comma-separated)")
+        agent_frequency = st.number_input("Frequency (hours)", min_value=1, max_value=168, value=6)
+        agent_enabled = st.checkbox("Enabled", value=True)
+        if st.form_submit_button("Add Agent"):
+            new_agent = {
+                "name": agent_name,
+                "category": agent_category,
+                "keywords": [k.strip() for k in agent_keywords.split(",") if k.strip()],
+                "frequency_hours": agent_frequency,
+                "enabled": agent_enabled
+            }
+            agents.append(new_agent)
+            save_agents(agents)
+            st.success("Agent added!")
+            st.rerun()
+
+    st.subheader("Existing Agents")
+    if agents:
+        for idx, agent in enumerate(agents):
+            st.markdown(f"**{agent['name']}** | Category: {agent['category']} | Every {agent['frequency_hours']}h | {'Enabled' if agent['enabled'] else 'Disabled'}")
+            st.markdown(f"Keywords: {', '.join(agent['keywords']) if agent['keywords'] else 'None'}")
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button(f"Delete", key=f"delete_agent_{idx}"):
+                    agents.pop(idx)
+                    save_agents(agents)
+                    st.success("Agent deleted!")
+                    st.rerun()
+            with col2:
+                pass  # Placeholder for future edit functionality
+    else:
+        st.info("No agents configured yet.")
+
 # Main content area
 st.header("News Intelligence Dashboard")
 
@@ -166,6 +208,7 @@ if st.button("🚀 Run Recon", use_container_width=True):
                         <p><strong>Source:</strong> {story['source']}</p>
                         <p><strong>Published:</strong> {story['published']}</p>
                         <p><strong>Category:</strong> {story['category']}</p>
+                        <p><strong>Preview:</strong> {story.get('content', '')[:200]}...</p>
                         <p>{story['summary']}</p>
                         <a href="{story['url']}" target="_blank">Read more</a>
                     </div>
@@ -176,4 +219,20 @@ if st.button("🚀 Run Recon", use_container_width=True):
 
 # Footer
 st.markdown("---")
-st.markdown("Gofr Recon | Powered by Streamlit and OpenAI") 
+st.markdown("Gofr Recon | Powered by Streamlit and OpenAI")
+
+AGENTS_CONFIG_PATH = "config/agents.yaml"
+
+def load_agents():
+    try:
+        with open(AGENTS_CONFIG_PATH, "r") as f:
+            agents = yaml.safe_load(f)
+            if not isinstance(agents, list):
+                agents = []
+            return agents
+    except Exception:
+        return []
+
+def save_agents(agents):
+    with open(AGENTS_CONFIG_PATH, "w") as f:
+        yaml.dump(agents, f) 
