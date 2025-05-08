@@ -163,7 +163,7 @@ with st.sidebar:
 
     with st.form("add_agent_form"):
         agent_name = st.text_input("Agent Name")
-        agent_category = st.selectbox("Category", list(all_categories.keys()))
+        agent_categories = st.multiselect("Categories", list(all_categories.keys()))
         agent_keywords = st.text_input("Keywords (comma-separated)")
         agent_frequency_min = st.number_input("Frequency (minutes)", min_value=0, max_value=1440, value=0, help="Set to 0 to disable minute-based scheduling.")
         agent_frequency_hr = st.number_input("Frequency (hours)", min_value=0, max_value=168, value=6, help="Set to 0 to disable hour-based scheduling.")
@@ -171,7 +171,7 @@ with st.sidebar:
         if st.form_submit_button("Add Agent"):
             new_agent = {
                 "name": agent_name,
-                "category": agent_category,
+                "categories": agent_categories,
                 "keywords": [k.strip() for k in agent_keywords.split(",") if k.strip()],
                 "frequency_minutes": int(agent_frequency_min),
                 "frequency_hours": int(agent_frequency_hr),
@@ -185,7 +185,7 @@ with st.sidebar:
     st.subheader("Existing Agents")
     if agents:
         for idx, agent in enumerate(agents):
-            st.markdown(f"**{agent['name']}** | Category: {agent['category']} | Every {agent['frequency_hours']}h | {'Enabled' if agent['enabled'] else 'Disabled'}")
+            st.markdown(f"**{agent['name']}** | Categories: {', '.join(agent['categories'])} | Every {agent['frequency_hours']}h | {'Enabled' if agent['enabled'] else 'Disabled'}")
             st.markdown(f"Keywords: {', '.join(agent['keywords']) if agent['keywords'] else 'None'}")
             col1, col2 = st.columns(2)
             with col1:
@@ -211,7 +211,7 @@ except Exception:
     inbox = []
 if inbox:
     for entry in reversed(inbox[-10:]):  # Show last 10 agent runs
-        st.markdown(f"**Agent:** {entry['agent']} | **Category:** {entry['category']} | **Time:** {entry['timestamp']}")
+        st.markdown(f"**Agent:** {entry['agent']} | **Categories:** {', '.join(entry.get('categories', []))} | **Time:** {entry['timestamp']}")
         for article in entry['results'][:3]:  # Show up to 3 articles per run
             st.markdown(f"- [{article['title']}]({article['url']})")
         st.markdown("---")
@@ -262,7 +262,7 @@ st.markdown("Gofr Recon | Powered by Streamlit and OpenAI")
 
 def agent_task(agent):
     # Fetch news for the agent's category and keywords
-    articles = fetch_news(sources=[agent['category']])
+    articles = fetch_news(sources=agent.get('categories', []))
     # Filter by keywords if specified
     if agent['keywords']:
         articles = [a for a in articles if any(k.lower() in a['title'].lower() or k.lower() in a.get('content', '').lower() for k in agent['keywords'])]
@@ -274,7 +274,7 @@ def agent_task(agent):
         inbox = []
     inbox.append({
         "agent": agent['name'],
-        "category": agent['category'],
+        "categories": agent.get('categories', []),
         "timestamp": datetime.now().isoformat(),
         "results": articles
     })
