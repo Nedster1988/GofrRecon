@@ -204,6 +204,15 @@ st.header("News Intelligence Dashboard")
 
 # Agent Inbox Section
 st.subheader("Agent Inbox")
+
+if st.button("Run Agents Now", use_container_width=True):
+    agents = load_agents()
+    for agent in agents:
+        if agent.get('enabled'):
+            agent_task(agent)
+    st.success("All enabled agents have run.")
+    st.rerun()
+
 try:
     with open(INBOX_PATH, "r") as f:
         inbox = json.load(f)
