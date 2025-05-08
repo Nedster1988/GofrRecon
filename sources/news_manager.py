@@ -36,8 +36,14 @@ class NewsSourceManager:
     def get_all_categories(self) -> Dict[str, Dict[str, Any]]:
         """Get all categories (both default and custom)."""
         all_categories = {}
-        all_categories.update(self.config.get("default_categories", {}))
-        all_categories.update(self.config.get("custom_categories", {}))
+        default_cats = self.config.get("default_categories")
+        if not isinstance(default_cats, dict):
+            default_cats = {}
+        custom_cats = self.config.get("custom_categories")
+        if not isinstance(custom_cats, dict):
+            custom_cats = {}
+        all_categories.update(default_cats)
+        all_categories.update(custom_cats)
         return all_categories
     
     def get_category_info(self, category_id: str) -> Dict[str, Any]:
