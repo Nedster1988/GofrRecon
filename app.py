@@ -185,7 +185,7 @@ with st.sidebar:
     st.subheader("Existing Agents")
     if agents:
         for idx, agent in enumerate(agents):
-            st.markdown(f"**{agent['name']}** | Categories: {', '.join(agent['categories'])} | Every {agent['frequency_hours']}h | {'Enabled' if agent['enabled'] else 'Disabled'}")
+            st.markdown(f"**{agent['name']}** | Categories: {', '.join(agent.get('categories', [agent.get('category', 'unknown')]))} | Every {agent['frequency_hours']}h | {'Enabled' if agent['enabled'] else 'Disabled'}")
             st.markdown(f"Keywords: {', '.join(agent['keywords']) if agent['keywords'] else 'None'}")
             col1, col2 = st.columns(2)
             with col1:
@@ -211,7 +211,7 @@ except Exception:
     inbox = []
 if inbox:
     for entry in reversed(inbox[-10:]):  # Show last 10 agent runs
-        st.markdown(f"**Agent:** {entry['agent']} | **Categories:** {', '.join(entry.get('categories', []))} | **Time:** {entry['timestamp']}")
+        st.markdown(f"**Agent:** {entry['agent']} | **Categories:** {', '.join(entry.get('categories', [entry.get('category', 'unknown')]))} | **Time:** {entry['timestamp']}")
         for article in entry['results'][:3]:  # Show up to 3 articles per run
             st.markdown(f"- [{article['title']}]({article['url']})")
         st.markdown("---")
@@ -262,7 +262,7 @@ st.markdown("Gofr Recon | Powered by Streamlit and OpenAI")
 
 def agent_task(agent):
     # Fetch news for the agent's category and keywords
-    articles = fetch_news(sources=agent.get('categories', []))
+    articles = fetch_news(sources=agent.get('categories', [agent.get('category', 'unknown')]))
     # Filter by keywords if specified
     if agent['keywords']:
         articles = [a for a in articles if any(k.lower() in a['title'].lower() or k.lower() in a.get('content', '').lower() for k in agent['keywords'])]
@@ -274,7 +274,7 @@ def agent_task(agent):
         inbox = []
     inbox.append({
         "agent": agent['name'],
-        "categories": agent.get('categories', []),
+        "categories": agent.get('categories', [agent.get('category', 'unknown')]),
         "timestamp": datetime.now().isoformat(),
         "results": articles
     })
