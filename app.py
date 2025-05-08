@@ -5,6 +5,22 @@ import sys
 from pathlib import Path
 import yaml
 
+AGENTS_CONFIG_PATH = "config/agents.yaml"
+
+def load_agents():
+    try:
+        with open(AGENTS_CONFIG_PATH, "r") as f:
+            agents = yaml.safe_load(f)
+            if not isinstance(agents, list):
+                agents = []
+            return agents
+    except Exception:
+        return []
+
+def save_agents(agents):
+    with open(AGENTS_CONFIG_PATH, "w") as f:
+        yaml.dump(agents, f)
+
 # Add project root to Python path
 project_root = Path(__file__).parent
 sys.path.append(str(project_root))
@@ -219,20 +235,4 @@ if st.button("🚀 Run Recon", use_container_width=True):
 
 # Footer
 st.markdown("---")
-st.markdown("Gofr Recon | Powered by Streamlit and OpenAI")
-
-AGENTS_CONFIG_PATH = "config/agents.yaml"
-
-def load_agents():
-    try:
-        with open(AGENTS_CONFIG_PATH, "r") as f:
-            agents = yaml.safe_load(f)
-            if not isinstance(agents, list):
-                agents = []
-            return agents
-    except Exception:
-        return []
-
-def save_agents(agents):
-    with open(AGENTS_CONFIG_PATH, "w") as f:
-        yaml.dump(agents, f) 
+st.markdown("Gofr Recon | Powered by Streamlit and OpenAI") 
