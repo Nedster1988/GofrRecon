@@ -94,7 +94,7 @@ st.markdown("""
     body, .main, .stApp {
         font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
         background: #F3F7FA;
-        color: #1E1E1E;
+        color: #1e293b;
     }
     .sidebar-content {
         background: rgba(13,42,107,0.90);
@@ -151,10 +151,10 @@ st.markdown("""
         color: #fff !important;
     }
     .modern-card, .modern-card * {
-        color: #222222 !important;
+        color: #1e293b !important; /* Tailwind gray-800 */
     }
     .modern-card {
-        background: rgba(13,42,107,0.90);
+        background: #fff !important; /* Tailwind white */
         border-radius: 1.2rem;
         box-shadow: 0 4px 24px 0 rgba(0,0,0,0.10);
         padding: 2rem 1.5rem 1.5rem 1.5rem;
@@ -162,14 +162,14 @@ st.markdown("""
         border: none;
     }
     .modern-card a, .modern-card a:visited, .modern-card a:hover {
-        color: #1E1E1E !important;
+        color: #2563eb !important; /* Tailwind blue-600 */
         text-decoration: underline;
     }
     .modern-card-empty {
-        background: rgba(26,26,61,0.90);
+        background: #f3f4f6 !important; /* Tailwind gray-100 */
         border-radius: 1.2rem;
         border: none;
-        color: #222222 !important;
+        color: #1e293b !important;
         padding: 2.2rem;
         text-align: center;
         font-size: 1.08rem;
@@ -186,7 +186,7 @@ st.markdown("""
     .modern-subheader {
         font-size: 1.18rem;
         font-weight: 400;
-        color: #222222;
+        color: #1e293b;
         margin-bottom: 1.2rem;
         margin-top: 1.2rem;
     }
@@ -227,21 +227,21 @@ st.markdown("""
     /* Add more breathing room between sections */
     .stApp > div > div > div > div { margin-bottom: 2.5rem !important; }
     p, span, small {
-        color: #1E1E1E !important;
+        color: #1e293b !important;
     }
     .stMarkdown p, .stMarkdown span, .stMarkdown small {
-        color: #1E1E1E !important;
+        color: #1e293b !important;
     }
     /* Fix for unreadable article titles */
     div[data-testid="stMarkdownContainer"] p,
     div[data-testid="stMarkdownContainer"] span,
     div[data-testid="stMarkdownContainer"] li {
-        color: #1e1e1e !important;
+        color: #1e293b !important;
     }
 
     /* Restore dark menu dropdown contrast */
     section[data-testid="stSidebar"] {
-        background-color: #1e1e1e !important;
+        background-color: #18181b !important; /* Tailwind gray-900 */
     }
     section[data-testid="stSidebar"] * {
         color: #f5f5f5 !important;
@@ -249,7 +249,7 @@ st.markdown("""
 
     /* Optional: Better dropdown menu styling (top-right) */
     div[role="menu"] {
-        background-color: #1e1e1e !important;
+        background-color: #18181b !important;
         color: #f5f5f5 !important;
     }
 
@@ -257,12 +257,12 @@ st.markdown("""
     div[data-testid="stMarkdownContainer"] p,
     div[data-testid="stMarkdownContainer"] span,
     div[data-testid="stMarkdownContainer"] li {
-        color: #1e1e1e !important;  /* High-contrast dark gray */
+        color: #1e293b !important;  /* High-contrast dark gray */
     }
 
     /* Fix Streamlit dropdown and menu contrast */
     div[role="menu"], div[role="menu"] * {
-        background-color: #1e1e1e !important;
+        background-color: #18181b !important;
         color: #f5f5f5 !important;
     }
 
@@ -270,8 +270,8 @@ st.markdown("""
     section[data-testid="stSidebar"] input,
     section[data-testid="stSidebar"] textarea,
     section[data-testid="stSidebar"] select {
-        background-color: #f0f0f0 !important;
-        color: #1e1e1e !important;
+        background-color: #f3f4f6 !important; /* Tailwind gray-100 */
+        color: #1e293b !important; /* Tailwind gray-800 */
     }
 
     /* Sidebar labels */
