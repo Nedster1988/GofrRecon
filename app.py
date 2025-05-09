@@ -96,125 +96,129 @@ st.markdown("""
         background: #1A1A3D;
     }
     .sidebar-content {
-        background: #0D2A6B;
-        border-radius: 1rem;
-        box-shadow: 0 2px 16px 0 rgba(0,0,0,0.10);
-        padding: 2rem 1.5rem 1.5rem 1.5rem;
-        margin-bottom: 1.5rem;
+        background: rgba(13,42,107,0.85);
+        border-radius: 1.2rem;
+        box-shadow: 0 4px 24px 0 rgba(0,0,0,0.10);
+        padding: 2.5rem 1.5rem 2rem 1.5rem;
+        margin-bottom: 2rem;
+        border: none;
     }
-    /* Sidebar text contrast fix - light text on dark background */
     [data-testid="stSidebar"] .sidebar-content, [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3, [data-testid="stSidebar"] h4, [data-testid="stSidebar"] h5, [data-testid="stSidebar"] h6, [data-testid="stSidebar"] .stMarkdown, [data-testid="stSidebar"] .stText, [data-testid="stSidebar"] label, [data-testid="stSidebar"] .stExpanderHeader {
-        color: #FFFFFF !important;
-        font-weight: 700 !important;
+        color: #F3F7FA !important;
+        font-weight: 500 !important;
     }
     [data-testid="stSidebar"] .stMarkdown p, [data-testid="stSidebar"] .stText, [data-testid="stSidebar"] label {
-        font-weight: 500 !important;
+        font-weight: 400 !important;
     }
     .stButton>button, .stForm button {
         border-radius: 9999px;
-        font-weight: 600;
-        font-size: 1.1rem;
-        padding: 0.75rem 2rem;
-        background: linear-gradient(90deg, #00C6FF 0%, #0072FF 100%);
+        font-weight: 500;
+        font-size: 1.08rem;
+        padding: 0.7rem 2rem;
+        background: linear-gradient(90deg, #7FBFFF 0%, #0072FF 100%);
         color: #fff;
-        box-shadow: 0 2px 8px 0 rgba(0,198,255,0.10);
+        box-shadow: 0 2px 8px 0 rgba(0,198,255,0.08);
         transition: background 0.2s, box-shadow 0.2s;
         border: none;
     }
     .stButton>button:hover, .stForm button:hover {
-        background: linear-gradient(90deg, #0072FF 0%, #00C6FF 100%);
-        box-shadow: 0 4px 16px 0 rgba(0,114,255,0.18);
+        background: linear-gradient(90deg, #0072FF 0%, #7FBFFF 100%);
+        box-shadow: 0 4px 16px 0 rgba(0,114,255,0.12);
     }
     .stTextInput>div>input, .stNumberInput>div>input, .stTextArea>div>textarea, .stMultiSelect>div {
         border-radius: 0.75rem;
-        border: 1px solid #00C6FF;
-        box-shadow: 0 1px 4px 0 rgba(0,198,255,0.03);
-        padding: 0.5rem 1rem;
-        background: #1A1A3D;
+        border: none;
+        box-shadow: 0 1px 6px 0 rgba(0,198,255,0.04);
+        padding: 0.6rem 1.1rem;
+        background: rgba(26,26,61,0.85);
         color: #fff;
         font-size: 1rem;
     }
     .stTextInput>div>input:focus, .stNumberInput>div>input:focus, .stTextArea>div>textarea:focus {
-        border-color: #0072FF;
-        outline: none;
-        background: #0D2A6B;
+        outline: 2px solid #7FBFFF;
+        background: rgba(13,42,107,0.95);
         color: #fff;
     }
     .stCheckbox>label {
         font-size: 1rem;
-        font-weight: 500;
-        color: #FFFFFF !important;
+        font-weight: 400;
+        color: #F3F7FA !important;
     }
     .stExpanderHeader {
-        font-weight: 600;
-        font-size: 1.1rem;
-        color: #00C6FF !important;
+        font-weight: 500;
+        font-size: 1.08rem;
+        color: #B3CFFF !important;
     }
     .modern-card {
-        background: #0D2A6B;
-        border-radius: 1rem;
-        box-shadow: 0 2px 16px 0 rgba(0,0,0,0.10);
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        border: 1px solid #0057FF;
-        color: #fff;
+        background: rgba(13,42,107,0.85);
+        border-radius: 1.2rem;
+        box-shadow: 0 4px 24px 0 rgba(0,0,0,0.10);
+        padding: 2rem 1.5rem 1.5rem 1.5rem;
+        margin-bottom: 2.2rem;
+        border: none;
+        color: #F3F7FA;
     }
     .modern-card-empty {
-        background: #1A1A3D;
-        border-radius: 1rem;
-        border: 1px solid #0072FF;
-        color: #00C6FF;
-        padding: 2rem;
+        background: rgba(26,26,61,0.85);
+        border-radius: 1.2rem;
+        border: none;
+        color: #B3CFFF;
+        padding: 2.2rem;
         text-align: center;
-        font-size: 1.1rem;
-        margin-bottom: 1.5rem;
+        font-size: 1.08rem;
+        margin-bottom: 2.2rem;
     }
     .modern-header {
-        font-size: 2.2rem;
-        font-weight: 700;
-        color: #00C6FF;
-        margin-bottom: 0.5rem;
+        font-size: 2.1rem;
+        font-weight: 500;
+        color: #B3CFFF;
+        margin-bottom: 1.2rem;
+        margin-top: 2.2rem;
+        letter-spacing: 0.01em;
     }
     .modern-subheader {
-        font-size: 1.3rem;
-        font-weight: 600;
-        color: #0072FF;
-        margin-bottom: 1rem;
+        font-size: 1.18rem;
+        font-weight: 400;
+        color: #7FBFFF;
+        margin-bottom: 1.2rem;
+        margin-top: 1.2rem;
     }
     .modern-icon {
         margin-right: 0.5rem;
         vertical-align: middle;
-        color: #00C6FF;
+        color: #7FBFFF;
     }
     .modern-btn-icon {
         margin-right: 0.5rem;
         vertical-align: middle;
-        font-size: 1.2rem;
-        color: #00C6FF;
+        font-size: 1.1rem;
+        color: #7FBFFF;
     }
     .modern-btn-clear {
-        background: linear-gradient(90deg, #00C6FF 0%, #0057FF 100%);
+        background: rgba(127,191,255,0.18);
         color: #fff;
         border-radius: 9999px;
-        font-weight: 600;
-        font-size: 1.1rem;
-        padding: 0.75rem 2rem;
+        font-weight: 400;
+        font-size: 1.08rem;
+        padding: 0.7rem 2rem;
         border: none;
-        box-shadow: 0 2px 8px 0 rgba(0,87,255,0.10);
+        box-shadow: 0 2px 8px 0 rgba(0,87,255,0.08);
         transition: background 0.2s, box-shadow 0.2s;
     }
     .modern-btn-clear:hover {
-        background: linear-gradient(90deg, #0057FF 0%, #00C6FF 100%);
-        box-shadow: 0 4px 16px 0 rgba(0,87,255,0.18);
+        background: rgba(127,191,255,0.28);
+        box-shadow: 0 4px 16px 0 rgba(0,87,255,0.10);
     }
     a, a:visited {
-        color: #00C6FF !important;
+        color: #7FBFFF !important;
         text-decoration: none;
     }
     a:hover {
-        color: #0072FF !important;
+        color: #B3CFFF !important;
         text-decoration: underline;
     }
+    /* Add more breathing room between sections */
+    .stApp > div > div > div > div { margin-bottom: 2.5rem !important; }
     </style>
 """, unsafe_allow_html=True)
 
