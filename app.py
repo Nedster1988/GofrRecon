@@ -308,7 +308,7 @@ st.markdown('<div class="modern-subheader">Agent Inbox</div>', unsafe_allow_html
 
 run_agents_col, clear_col = st.columns([2, 2])
 with run_agents_col:
-    if st.button("<span class='modern-btn-icon'>▶️</span> Run Agents Now", key="run_agents_btn", help="Run all enabled agents now", use_container_width=True):
+    if st.button("▶️ Run Agents Now", key="run_agents_btn", help="Run all enabled agents now", use_container_width=True):
         agents = load_agents()
         for agent in agents:
             if agent.get('enabled'):
@@ -346,7 +346,7 @@ except Exception:
 
 col_clear, col_spacer = st.columns([2, 8])
 with col_clear:
-    if st.button("<span class='modern-btn-icon'>🗑️</span> Clear All Agent Findings", key="clear_all_findings2", use_container_width=True):
+    if st.button("🗑️ Clear All Agent Findings", key="clear_all_findings2", use_container_width=True):
         with open(INBOX_PATH, "w") as f:
             json.dump([], f)
         st.success("All agent findings deleted.")
@@ -367,7 +367,7 @@ if inbox:
                 st.success("Agent finding deleted.")
                 st.rerun()
         st.markdown("</div>", unsafe_allow_html=True)
-    if st.button("<span class='modern-btn-icon'>✨</span> Generate Content", key="generate_content_btn", use_container_width=True):
+    if st.button("✨ Generate Content", key="generate_content_btn", use_container_width=True):
         with st.spinner("Generating content..."):
             generated_content = content_generator.generate_batch_content(inbox)
             st.markdown('<div class="modern-subheader">Generated Content</div>', unsafe_allow_html=True)
@@ -388,7 +388,7 @@ if inbox:
                     ["Twitter", "LinkedIn", "Facebook"],
                     key=f"platforms_{content['agent']}_{content['timestamp']}"
                 )
-                if platforms and st.button("<span class='modern-btn-icon'>📤</span> Post Content", key=f"post_{content['agent']}_{content['timestamp']}", use_container_width=True):
+                if platforms and st.button("📤 Post Content", key=f"post_{content['agent']}_{content['timestamp']}", use_container_width=True):
                     with st.spinner("Posting content..."):
                         result = content_poster.post_content(content, platforms)
                         if result['success']:
@@ -419,7 +419,7 @@ else:
 
 # Run Recon button
 st.markdown("<div style='margin:2rem 0; text-align:center;'>", unsafe_allow_html=True)
-if st.button("<span class='modern-btn-icon'>🚀</span> Run Recon", key="run_recon_btn", use_container_width=True):
+if st.button("🚀 Run Recon", key="run_recon_btn", use_container_width=True):
     with st.spinner("Gathering and analyzing news..."):
         try:
             articles = fetch_news(
