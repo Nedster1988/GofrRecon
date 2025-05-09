@@ -9,6 +9,7 @@ import time
 import schedule
 import json
 import os
+from config import Config
 
 AGENTS_CONFIG_PATH = "config/agents.yaml"
 INBOX_PATH = "data/agent_inbox.json"
