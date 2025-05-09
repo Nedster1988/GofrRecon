@@ -195,27 +195,19 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Logo at the top of the main app
-st.markdown(
-    """
-    <div style='display: flex; align-items: center; margin-bottom: 1.5rem;'>
-        <img src='assets/logo.png' width='48' style='margin-right: 1rem;'/>
-        <span style='font-size:2.2rem;font-weight:700;color:#374151;'>Gofr Recon</span>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+# Logo at the top of the main app using columns
+col_logo, col_title = st.columns([1, 6])
+with col_logo:
+    st.image("assets/logo.png", width=48)
+with col_title:
+    st.markdown("<span style='font-size:2.2rem;font-weight:700;color:#374151;'>Gofr Recon</span>", unsafe_allow_html=True)
 
-# Logo in the sidebar
-st.sidebar.markdown(
-    """
-    <div style='display: flex; align-items: center; margin-bottom: 1.5rem;'>
-        <img src='assets/logo.png' width='36' style='margin-right: 0.75rem;'/>
-        <span style='font-size:1.5rem;font-weight:700;color:#374151;'>Gofr Recon</span>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+# Logo in the sidebar using columns
+col_logo_sb, col_title_sb = st.sidebar.columns([1, 6])
+with col_logo_sb:
+    st.sidebar.image("assets/logo.png", width=36)
+with col_title_sb:
+    st.sidebar.markdown("<span style='font-size:1.5rem;font-weight:700;color:#374151;'>Gofr Recon</span>", unsafe_allow_html=True)
 
 # Sidebar (Agent Input Panel)
 with st.sidebar:
