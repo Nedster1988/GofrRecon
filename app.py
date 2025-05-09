@@ -215,7 +215,7 @@ col_logo_sb, col_title_sb = st.sidebar.columns([1, 6])
 with col_logo_sb:
     st.sidebar.image("logo.png", width=60)
 with col_title_sb:
-    st.sidebar.markdown("<span style='font-size:1.5rem;font-weight:700;color:#374151;'>Gofr Recon</span>", unsafe_allow_html=True)
+    st.sidebar.markdown("<span style='font-size:1.5rem;font-weight:700;color:#fff;'>Gofr Recon</span>", unsafe_allow_html=True)
 
 # Sidebar (Agent Input Panel)
 with st.sidebar:
