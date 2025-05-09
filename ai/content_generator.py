@@ -49,9 +49,9 @@ CONTENT: [your content here]
 HASHTAGS: [comma-separated hashtags]
 CTA: [call to action]"""
 
-            # Call GPT-4
+            # Call GPT-3.5-turbo
             response = openai.ChatCompletion.create(
-                model="gpt-4",
+                model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": "You are a professional social media content creator specializing in news and analysis."},
                     {"role": "user", "content": prompt}
