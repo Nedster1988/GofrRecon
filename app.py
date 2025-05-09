@@ -198,14 +198,14 @@ st.markdown("""
 # Logo at the top of the main app using columns
 col_logo, col_title = st.columns([1, 6])
 with col_logo:
-    st.image("assets/logo.png", width=48)
+    st.image("logo.png", width=55)
 with col_title:
     st.markdown("<span style='font-size:2.2rem;font-weight:700;color:#374151;'>Gofr Recon</span>", unsafe_allow_html=True)
 
 # Logo in the sidebar using columns
 col_logo_sb, col_title_sb = st.sidebar.columns([1, 6])
 with col_logo_sb:
-    st.sidebar.image("assets/logo.png", width=36)
+    st.sidebar.image("logo.png", width=41)
 with col_title_sb:
     st.sidebar.markdown("<span style='font-size:1.5rem;font-weight:700;color:#374151;'>Gofr Recon</span>", unsafe_allow_html=True)
 
