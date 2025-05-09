@@ -93,7 +93,7 @@ st.markdown("""
     <style>
     body, .main, .stApp {
         font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-        background: #7FBFFF;
+        background: #F3F7FA;
         color: #fff;
     }
     .sidebar-content {
