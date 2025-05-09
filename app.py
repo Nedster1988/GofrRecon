@@ -96,15 +96,15 @@ st.markdown("""
         background: #f6f7fa;
     }
     .sidebar-content {
-        background: #fff;
+        background: #1f2937;
         border-radius: 1rem;
         box-shadow: 0 2px 16px 0 rgba(0,0,0,0.06);
         padding: 2rem 1.5rem 1.5rem 1.5rem;
         margin-bottom: 1.5rem;
     }
-    /* Sidebar text contrast fix */
+    /* Sidebar text contrast fix - light text on dark background */
     [data-testid="stSidebar"] .sidebar-content, [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3, [data-testid="stSidebar"] h4, [data-testid="stSidebar"] h5, [data-testid="stSidebar"] h6, [data-testid="stSidebar"] .stMarkdown, [data-testid="stSidebar"] .stText, [data-testid="stSidebar"] label, [data-testid="stSidebar"] .stExpanderHeader {
-        color: #111827 !important;
+        color: #fff !important;
         font-weight: 700 !important;
     }
     [data-testid="stSidebar"] .stMarkdown p, [data-testid="stSidebar"] .stText, [data-testid="stSidebar"] label {
