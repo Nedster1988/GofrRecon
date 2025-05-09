@@ -94,7 +94,7 @@ st.markdown("""
     body, .main, .stApp {
         font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
         background: #F3F7FA;
-        color: #fff;
+        color: #1E1E1E;
     }
     .sidebar-content {
         background: rgba(13,42,107,0.90);
@@ -151,7 +151,7 @@ st.markdown("""
         color: #fff !important;
     }
     .modern-card, .modern-card * {
-        color: #000 !important;
+        color: #222222 !important;
     }
     .modern-card {
         background: rgba(13,42,107,0.90);
@@ -162,13 +162,14 @@ st.markdown("""
         border: none;
     }
     .modern-card a, .modern-card a:visited, .modern-card a:hover {
-        color: #000 !important;
+        color: #1E1E1E !important;
+        text-decoration: underline;
     }
     .modern-card-empty {
         background: rgba(26,26,61,0.90);
         border-radius: 1.2rem;
         border: none;
-        color: #fff !important;
+        color: #222222 !important;
         padding: 2.2rem;
         text-align: center;
         font-size: 1.08rem;
@@ -185,7 +186,7 @@ st.markdown("""
     .modern-subheader {
         font-size: 1.18rem;
         font-weight: 400;
-        color: #111827;
+        color: #222222;
         margin-bottom: 1.2rem;
         margin-top: 1.2rem;
     }
