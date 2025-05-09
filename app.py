@@ -92,12 +92,12 @@ st.set_page_config(
 st.markdown("""
     <style>
     body, .main, .stApp {
-        font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-        background: #f3f4f6 !important; /* Tailwind gray-100 */
-        color: #18181b !important;      /* Tailwind gray-900 */
+        font-family: 'Inter', sans-serif !important;
+        background: #FFFFFF !important;
+        color: #1A1A3D !important;
     }
     .sidebar-content {
-        background: rgba(13,42,107,0.90);
+        background-color: #1A1A3D !important;
         border-radius: 1.2rem;
         box-shadow: 0 4px 24px 0 rgba(0,0,0,0.10);
         padding: 2.5rem 1.5rem 2rem 1.5rem;
@@ -105,54 +105,55 @@ st.markdown("""
         border: none;
     }
     [data-testid="stSidebar"] .sidebar-content, [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3, [data-testid="stSidebar"] h4, [data-testid="stSidebar"] h5, [data-testid="stSidebar"] h6, [data-testid="stSidebar"] .stMarkdown, [data-testid="stSidebar"] .stText, [data-testid="stSidebar"] label, [data-testid="stSidebar"] .stExpanderHeader {
-        color: #fff !important;
+        color: #FFFFFF !important;
         font-weight: 500 !important;
     }
     [data-testid="stSidebar"] .stMarkdown p, [data-testid="stSidebar"] .stText, [data-testid="stSidebar"] label {
         font-weight: 400 !important;
     }
     .stButton>button, .stForm button {
+        background: #0072FF !important;
+        color: #FFFFFF !important;
         border-radius: 9999px;
         font-weight: 500;
         font-size: 1.08rem;
         padding: 0.7rem 2rem;
-        background: #0D2A6B !important;
-        color: #fff !important;
-        box-shadow: 0 2px 8px 0 rgba(13,42,107,0.10);
-        transition: background 0.2s, box-shadow 0.2s;
         border: none;
+        box-shadow: 0 2px 8px 0 rgba(0,114,255,0.10);
+        transition: background 0.2s, box-shadow 0.2s;
     }
     .stButton>button:hover, .stForm button:hover {
-        background: #1A1A3D;
-        box-shadow: 0 4px 16px 0 rgba(26,26,61,0.12);
+        background: #00C6FF !important;
+        color: #FFFFFF !important;
+        box-shadow: 0 4px 16px 0 rgba(0,198,255,0.12);
     }
     .stTextInput>div>input, .stNumberInput>div>input, .stTextArea>div>textarea, .stMultiSelect>div {
         border-radius: 0.75rem;
-        border: none;
-        box-shadow: 0 1px 6px 0 rgba(13,42,107,0.04);
+        border: 2px solid #0057FF !important;
+        box-shadow: 0 1px 6px 0 rgba(0,114,255,0.04);
         padding: 0.6rem 1.1rem;
-        background: rgba(26,26,61,0.85);
-        color: #fff;
+        background: #0D2A6B !important;
+        color: #FFFFFF !important;
         font-size: 1rem;
     }
     .stTextInput>div>input:focus, .stNumberInput>div>input:focus, .stTextArea>div>textarea:focus {
-        outline: 2px solid #0D2A6B;
-        background: rgba(13,42,107,0.95);
-        color: #fff;
+        outline: 2px solid #0057FF !important;
+        background: #0D2A6B !important;
+        color: #FFFFFF !important;
     }
     .stCheckbox>label {
         font-size: 1rem;
         font-weight: 400;
-        color: #fff !important;
+        color: #FFFFFF !important;
     }
     .stExpanderHeader {
         font-weight: 500;
         font-size: 1.08rem;
-        color: #fff !important;
+        color: #FFFFFF !important;
     }
     .modern-card, .modern-card * {
-        background: #fff !important;
-        color: #18181b !important;
+        background: #FFFFFF !important;
+        color: #1A1A3D !important;
         border-radius: 1.2rem;
         box-shadow: 0 4px 24px 0 rgba(0,0,0,0.10);
         padding: 2rem 1.5rem 1.5rem 1.5rem;
@@ -160,14 +161,14 @@ st.markdown("""
         border: none;
     }
     .modern-card a, .modern-card a:visited, .modern-card a:hover {
-        color: #2563eb !important;
+        color: #0072FF !important;
         text-decoration: underline;
     }
     .modern-card-empty {
-        background: #f3f4f6 !important; /* Tailwind gray-100 */
+        background: #F5F7FA !important;
+        color: #1A1A3D !important;
         border-radius: 1.2rem;
         border: none;
-        color: #1e293b !important;
         padding: 2.2rem;
         text-align: center;
         font-size: 1.08rem;
@@ -176,7 +177,7 @@ st.markdown("""
     .modern-header {
         font-size: 2.1rem;
         font-weight: 500;
-        color: #111827;
+        color: #1A1A3D;
         margin-bottom: 1.2rem;
         margin-top: 2.2rem;
         letter-spacing: 0.01em;
@@ -184,84 +185,85 @@ st.markdown("""
     .modern-subheader {
         font-size: 1.18rem;
         font-weight: 400;
-        color: #1e293b;
+        color: #1A1A3D;
         margin-bottom: 1.2rem;
         margin-top: 1.2rem;
     }
     .modern-icon {
         margin-right: 0.5rem;
         vertical-align: middle;
-        color: #fff;
+        color: #00C6FF !important;
     }
     .modern-btn-icon {
         margin-right: 0.5rem;
         vertical-align: middle;
         font-size: 1.1rem;
-        color: #fff;
+        color: #00C6FF !important;
     }
     .modern-btn-clear {
-        background: #0D2A6B;
-        color: #fff;
+        background: #0072FF !important;
+        color: #FFFFFF !important;
         border-radius: 9999px;
         font-weight: 400;
         font-size: 1.08rem;
         padding: 0.7rem 2rem;
         border: none;
-        box-shadow: 0 2px 8px 0 rgba(13,42,107,0.08);
+        box-shadow: 0 2px 8px 0 rgba(0,114,255,0.08);
         transition: background 0.2s, box-shadow 0.2s;
     }
     .modern-btn-clear:hover {
-        background: #1A1A3D;
-        box-shadow: 0 4px 16px 0 rgba(26,26,61,0.10);
+        background: #00C6FF !important;
+        color: #FFFFFF !important;
+        box-shadow: 0 4px 16px 0 rgba(0,198,255,0.10);
     }
     a, a:visited {
-        color: #fff !important;
+        color: #0072FF !important;
         text-decoration: none;
     }
     a:hover {
-        color: #fff !important;
+        color: #00C6FF !important;
         text-decoration: underline;
     }
     /* Add more breathing room between sections */
     .stApp > div > div > div > div { margin-bottom: 2.5rem !important; }
     p, span, small {
-        color: #1e293b !important;
+        color: #1A1A3D !important;
     }
     .stMarkdown p, .stMarkdown span, .stMarkdown small {
-        color: #1e293b !important;
+        color: #1A1A3D !important;
     }
     /* Fix for unreadable article titles */
     div[data-testid="stMarkdownContainer"] p,
     div[data-testid="stMarkdownContainer"] span,
     div[data-testid="stMarkdownContainer"] li {
-        color: #1e293b !important;
+        color: #1A1A3D !important;
     }
 
     /* Restore dark menu dropdown contrast */
     section[data-testid="stSidebar"] {
-        background-color: #18181b !important;
+        background-color: #1A1A3D !important;
     }
     section[data-testid="stSidebar"] * {
-        color: #f5f5f5 !important;
+        color: #FFFFFF !important;
     }
 
     /* Optional: Better dropdown menu styling (top-right) */
     div[role="menu"] {
-        background-color: #18181b !important;
-        color: #f5f5f5 !important;
+        background-color: #1A1A3D !important;
+        color: #FFFFFF !important;
     }
 
     /* Fix unreadable article text inside summary boxes */
     div[data-testid="stMarkdownContainer"] p,
     div[data-testid="stMarkdownContainer"] span,
     div[data-testid="stMarkdownContainer"] li {
-        color: #1e293b !important;  /* High-contrast dark gray */
+        color: #1A1A3D !important;  /* High-contrast dark gray */
     }
 
     /* Fix Streamlit dropdown and menu contrast */
     div[role="menu"], div[role="menu"] * {
-        background-color: #18181b !important;
-        color: #f5f5f5 !important;
+        background-color: #1A1A3D !important;
+        color: #FFFFFF !important;
     }
 
     /* Sidebar input contrast fix */
@@ -269,14 +271,14 @@ st.markdown("""
     section[data-testid="stSidebar"] textarea,
     section[data-testid="stSidebar"] select {
         background-color: #27272a !important; /* Tailwind gray-800 */
-        color: #f5f5f5 !important;
+        color: #FFFFFF !important;
     }
 
     /* Sidebar labels */
     section[data-testid="stSidebar"] label, 
     section[data-testid="stSidebar"] span,
     section[data-testid="stSidebar"] div {
-        color: #e5e7eb !important; /* Tailwind gray-200 */
+        color: #FFFFFF !important; /* Tailwind gray-200 */
     }
     </style>
 """, unsafe_allow_html=True)
