@@ -150,6 +150,9 @@ st.markdown("""
         font-size: 1.08rem;
         color: #fff !important;
     }
+    .modern-card, .modern-card * {
+        color: #111827 !important;
+    }
     .modern-card {
         background: rgba(13,42,107,0.90);
         border-radius: 1.2rem;
@@ -157,7 +160,6 @@ st.markdown("""
         padding: 2rem 1.5rem 1.5rem 1.5rem;
         margin-bottom: 2.2rem;
         border: none;
-        color: #111827;
     }
     .modern-card-empty {
         background: rgba(26,26,61,0.90);
