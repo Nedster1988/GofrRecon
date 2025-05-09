@@ -93,8 +93,8 @@ st.markdown("""
     <style>
     body, .main, .stApp {
         font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-        background: #F3F7FA;
-        color: #1e293b;
+        background: #f3f4f6 !important; /* Tailwind gray-100 */
+        color: #18181b !important;      /* Tailwind gray-900 */
     }
     .sidebar-content {
         background: rgba(13,42,107,0.90);
@@ -116,8 +116,8 @@ st.markdown("""
         font-weight: 500;
         font-size: 1.08rem;
         padding: 0.7rem 2rem;
-        background: #0D2A6B;
-        color: #fff;
+        background: #0D2A6B !important;
+        color: #fff !important;
         box-shadow: 0 2px 8px 0 rgba(13,42,107,0.10);
         transition: background 0.2s, box-shadow 0.2s;
         border: none;
@@ -151,10 +151,8 @@ st.markdown("""
         color: #fff !important;
     }
     .modern-card, .modern-card * {
-        color: #1e293b !important; /* Tailwind gray-800 */
-    }
-    .modern-card {
-        background: #fff !important; /* Tailwind white */
+        background: #fff !important;
+        color: #18181b !important;
         border-radius: 1.2rem;
         box-shadow: 0 4px 24px 0 rgba(0,0,0,0.10);
         padding: 2rem 1.5rem 1.5rem 1.5rem;
@@ -162,7 +160,7 @@ st.markdown("""
         border: none;
     }
     .modern-card a, .modern-card a:visited, .modern-card a:hover {
-        color: #2563eb !important; /* Tailwind blue-600 */
+        color: #2563eb !important;
         text-decoration: underline;
     }
     .modern-card-empty {
@@ -241,7 +239,7 @@ st.markdown("""
 
     /* Restore dark menu dropdown contrast */
     section[data-testid="stSidebar"] {
-        background-color: #18181b !important; /* Tailwind gray-900 */
+        background-color: #18181b !important;
     }
     section[data-testid="stSidebar"] * {
         color: #f5f5f5 !important;
@@ -270,15 +268,15 @@ st.markdown("""
     section[data-testid="stSidebar"] input,
     section[data-testid="stSidebar"] textarea,
     section[data-testid="stSidebar"] select {
-        background-color: #f3f4f6 !important; /* Tailwind gray-100 */
-        color: #1e293b !important; /* Tailwind gray-800 */
+        background-color: #27272a !important; /* Tailwind gray-800 */
+        color: #f5f5f5 !important;
     }
 
     /* Sidebar labels */
     section[data-testid="stSidebar"] label, 
     section[data-testid="stSidebar"] span,
     section[data-testid="stSidebar"] div {
-        color: #eaeaea;
+        color: #e5e7eb !important; /* Tailwind gray-200 */
     }
     </style>
 """, unsafe_allow_html=True)
