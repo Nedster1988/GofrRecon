@@ -226,6 +226,12 @@ st.markdown("""
     }
     /* Add more breathing room between sections */
     .stApp > div > div > div > div { margin-bottom: 2.5rem !important; }
+    p, span, small {
+        color: #1E1E1E !important;
+    }
+    .stMarkdown p, .stMarkdown span, .stMarkdown small {
+        color: #1E1E1E !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
