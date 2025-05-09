@@ -93,18 +93,18 @@ st.markdown("""
     <style>
     body, .main, .stApp {
         font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-        background: #f6f7fa;
+        background: #1A1A3D;
     }
     .sidebar-content {
-        background: #1f2937;
+        background: #0D2A6B;
         border-radius: 1rem;
-        box-shadow: 0 2px 16px 0 rgba(0,0,0,0.06);
+        box-shadow: 0 2px 16px 0 rgba(0,0,0,0.10);
         padding: 2rem 1.5rem 1.5rem 1.5rem;
         margin-bottom: 1.5rem;
     }
     /* Sidebar text contrast fix - light text on dark background */
     [data-testid="stSidebar"] .sidebar-content, [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3, [data-testid="stSidebar"] h4, [data-testid="stSidebar"] h5, [data-testid="stSidebar"] h6, [data-testid="stSidebar"] .stMarkdown, [data-testid="stSidebar"] .stText, [data-testid="stSidebar"] label, [data-testid="stSidebar"] .stExpanderHeader {
-        color: #fff !important;
+        color: #FFFFFF !important;
         font-weight: 700 !important;
     }
     [data-testid="stSidebar"] .stMarkdown p, [data-testid="stSidebar"] .stText, [data-testid="stSidebar"] label {
@@ -115,50 +115,55 @@ st.markdown("""
         font-weight: 600;
         font-size: 1.1rem;
         padding: 0.75rem 2rem;
-        background: linear-gradient(90deg, #6366f1 0%, #60a5fa 100%);
+        background: linear-gradient(90deg, #00C6FF 0%, #0072FF 100%);
         color: #fff;
-        box-shadow: 0 2px 8px 0 rgba(99,102,241,0.10);
+        box-shadow: 0 2px 8px 0 rgba(0,198,255,0.10);
         transition: background 0.2s, box-shadow 0.2s;
         border: none;
     }
     .stButton>button:hover, .stForm button:hover {
-        background: linear-gradient(90deg, #60a5fa 0%, #6366f1 100%);
-        box-shadow: 0 4px 16px 0 rgba(99,102,241,0.18);
+        background: linear-gradient(90deg, #0072FF 0%, #00C6FF 100%);
+        box-shadow: 0 4px 16px 0 rgba(0,114,255,0.18);
     }
     .stTextInput>div>input, .stNumberInput>div>input, .stTextArea>div>textarea, .stMultiSelect>div {
         border-radius: 0.75rem;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 1px 4px 0 rgba(0,0,0,0.03);
+        border: 1px solid #00C6FF;
+        box-shadow: 0 1px 4px 0 rgba(0,198,255,0.03);
         padding: 0.5rem 1rem;
-        background: #f9fafb;
+        background: #1A1A3D;
+        color: #fff;
         font-size: 1rem;
     }
     .stTextInput>div>input:focus, .stNumberInput>div>input:focus, .stTextArea>div>textarea:focus {
-        border-color: #6366f1;
+        border-color: #0072FF;
         outline: none;
-        background: #fff;
+        background: #0D2A6B;
+        color: #fff;
     }
     .stCheckbox>label {
         font-size: 1rem;
         font-weight: 500;
+        color: #FFFFFF !important;
     }
     .stExpanderHeader {
         font-weight: 600;
         font-size: 1.1rem;
+        color: #00C6FF !important;
     }
     .modern-card {
-        background: #fff;
+        background: #0D2A6B;
         border-radius: 1rem;
-        box-shadow: 0 2px 16px 0 rgba(0,0,0,0.06);
+        box-shadow: 0 2px 16px 0 rgba(0,0,0,0.10);
         padding: 1.5rem;
         margin-bottom: 1.5rem;
-        border: 1px solid #e5e7eb;
+        border: 1px solid #0057FF;
+        color: #fff;
     }
     .modern-card-empty {
-        background: #f3f4f6;
+        background: #1A1A3D;
         border-radius: 1rem;
-        border: 1px solid #e5e7eb;
-        color: #6b7280;
+        border: 1px solid #0072FF;
+        color: #00C6FF;
         padding: 2rem;
         text-align: center;
         font-size: 1.1rem;
@@ -167,38 +172,48 @@ st.markdown("""
     .modern-header {
         font-size: 2.2rem;
         font-weight: 700;
-        color: #374151;
+        color: #00C6FF;
         margin-bottom: 0.5rem;
     }
     .modern-subheader {
         font-size: 1.3rem;
         font-weight: 600;
-        color: #6366f1;
+        color: #0072FF;
         margin-bottom: 1rem;
     }
     .modern-icon {
         margin-right: 0.5rem;
         vertical-align: middle;
+        color: #00C6FF;
     }
     .modern-btn-icon {
         margin-right: 0.5rem;
         vertical-align: middle;
         font-size: 1.2rem;
+        color: #00C6FF;
     }
     .modern-btn-clear {
-        background: linear-gradient(90deg, #f87171 0%, #fbbf24 100%);
+        background: linear-gradient(90deg, #00C6FF 0%, #0057FF 100%);
         color: #fff;
         border-radius: 9999px;
         font-weight: 600;
         font-size: 1.1rem;
         padding: 0.75rem 2rem;
         border: none;
-        box-shadow: 0 2px 8px 0 rgba(251,191,36,0.10);
+        box-shadow: 0 2px 8px 0 rgba(0,87,255,0.10);
         transition: background 0.2s, box-shadow 0.2s;
     }
     .modern-btn-clear:hover {
-        background: linear-gradient(90deg, #fbbf24 0%, #f87171 100%);
-        box-shadow: 0 4px 16px 0 rgba(251,191,36,0.18);
+        background: linear-gradient(90deg, #0057FF 0%, #00C6FF 100%);
+        box-shadow: 0 4px 16px 0 rgba(0,87,255,0.18);
+    }
+    a, a:visited {
+        color: #00C6FF !important;
+        text-decoration: none;
+    }
+    a:hover {
+        color: #0072FF !important;
+        text-decoration: underline;
     }
     </style>
 """, unsafe_allow_html=True)
