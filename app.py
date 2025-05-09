@@ -94,6 +94,7 @@ st.markdown("""
     body, .main, .stApp {
         font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
         background: #1A1A3D;
+        color: #fff;
     }
     .sidebar-content {
         background: rgba(13,42,107,0.85);
@@ -104,7 +105,7 @@ st.markdown("""
         border: none;
     }
     [data-testid="stSidebar"] .sidebar-content, [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3, [data-testid="stSidebar"] h4, [data-testid="stSidebar"] h5, [data-testid="stSidebar"] h6, [data-testid="stSidebar"] .stMarkdown, [data-testid="stSidebar"] .stText, [data-testid="stSidebar"] label, [data-testid="stSidebar"] .stExpanderHeader {
-        color: #F3F7FA !important;
+        color: #fff !important;
         font-weight: 500 !important;
     }
     [data-testid="stSidebar"] .stMarkdown p, [data-testid="stSidebar"] .stText, [data-testid="stSidebar"] label {
@@ -142,12 +143,12 @@ st.markdown("""
     .stCheckbox>label {
         font-size: 1rem;
         font-weight: 400;
-        color: #F3F7FA !important;
+        color: #fff !important;
     }
     .stExpanderHeader {
         font-weight: 500;
         font-size: 1.08rem;
-        color: #B3CFFF !important;
+        color: #fff !important;
     }
     .modern-card {
         background: rgba(13,42,107,0.85);
@@ -156,13 +157,13 @@ st.markdown("""
         padding: 2rem 1.5rem 1.5rem 1.5rem;
         margin-bottom: 2.2rem;
         border: none;
-        color: #F3F7FA;
+        color: #fff;
     }
     .modern-card-empty {
         background: rgba(26,26,61,0.85);
         border-radius: 1.2rem;
         border: none;
-        color: #B3CFFF;
+        color: #fff;
         padding: 2.2rem;
         text-align: center;
         font-size: 1.08rem;
@@ -171,7 +172,7 @@ st.markdown("""
     .modern-header {
         font-size: 2.1rem;
         font-weight: 500;
-        color: #B3CFFF;
+        color: #fff;
         margin-bottom: 1.2rem;
         margin-top: 2.2rem;
         letter-spacing: 0.01em;
@@ -179,20 +180,20 @@ st.markdown("""
     .modern-subheader {
         font-size: 1.18rem;
         font-weight: 400;
-        color: #7FBFFF;
+        color: #fff;
         margin-bottom: 1.2rem;
         margin-top: 1.2rem;
     }
     .modern-icon {
         margin-right: 0.5rem;
         vertical-align: middle;
-        color: #7FBFFF;
+        color: #fff;
     }
     .modern-btn-icon {
         margin-right: 0.5rem;
         vertical-align: middle;
         font-size: 1.1rem;
-        color: #7FBFFF;
+        color: #fff;
     }
     .modern-btn-clear {
         background: rgba(127,191,255,0.18);
@@ -210,11 +211,11 @@ st.markdown("""
         box-shadow: 0 4px 16px 0 rgba(0,87,255,0.10);
     }
     a, a:visited {
-        color: #7FBFFF !important;
+        color: #fff !important;
         text-decoration: none;
     }
     a:hover {
-        color: #B3CFFF !important;
+        color: #fff !important;
         text-decoration: underline;
     }
     /* Add more breathing room between sections */
