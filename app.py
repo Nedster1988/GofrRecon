@@ -232,6 +232,26 @@ st.markdown("""
     .stMarkdown p, .stMarkdown span, .stMarkdown small {
         color: #1E1E1E !important;
     }
+    /* Fix for unreadable article titles */
+    div[data-testid="stMarkdownContainer"] p,
+    div[data-testid="stMarkdownContainer"] span,
+    div[data-testid="stMarkdownContainer"] li {
+        color: #1e1e1e !important;
+    }
+
+    /* Restore dark menu dropdown contrast */
+    section[data-testid="stSidebar"] {
+        background-color: #1e1e1e !important;
+    }
+    section[data-testid="stSidebar"] * {
+        color: #f5f5f5 !important;
+    }
+
+    /* Optional: Better dropdown menu styling (top-right) */
+    div[role="menu"] {
+        background-color: #1e1e1e !important;
+        color: #f5f5f5 !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
