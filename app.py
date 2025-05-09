@@ -284,49 +284,81 @@ try:
 except Exception:
     inbox = []
 
+# Handle deletion of individual findings
+if 'delete_finding' not in st.session_state:
+    st.session_state['delete_finding'] = None
+if 'clear_inbox' not in st.session_state:
+    st.session_state['clear_inbox'] = False
+
+def save_inbox(new_inbox):
+    with open(INBOX_PATH, "w") as f:
+        json.dump(new_ins, f)
+
+# UI for clearing all findings
+col_clear, col_spacer = st.columns([1, 9])
+with col_clear:
+    if st.button("🗑️ Clear All Agent Findings", key="clear_all_findings"):
+        st.session_state['clear_inbox'] = True
+        with open(INBOX_PATH, "w") as f:
+            json.dump([], f)
+        st.success("All agent findings deleted.")
+        st.rerun()
+
 if inbox:
     st.subheader("Agent Findings")
+    # Show each finding in a card with a delete button
+    for idx, finding in enumerate(inbox):
+        with st.container():
+            st.markdown(f"<div style='background-color:#f8f9fa; border-radius:8px; padding:1rem; margin-bottom:1rem;'>", unsafe_allow_html=True)
+            st.write(f"**Agent:** {finding['agent']} | **Categories:** {', '.join(finding.get('categories', []))} | **Time:** {finding['timestamp']}")
+            st.write(f"**Articles:** {len(finding['results'])}")
+            del_col, sel_col = st.columns([1, 9])
+            with del_col:
+                if st.button("🗑️ Delete", key=f"delete_finding_{idx}"):
+                    st.session_state['delete_finding'] = idx
+            st.markdown("</div>", unsafe_allow_html=True)
+    # Handle deletion
+    if st.session_state['delete_finding'] is not None:
+        del inbox[st.session_state['delete_finding']]
+        with open(INBOX_PATH, "w") as f:
+            json.dump(inbox, f)
+        st.session_state['delete_finding'] = None
+        st.success("Agent finding deleted.")
+        st.rerun()
     
-    # Select agent findings to generate content from
-    selected_findings = []
-    for finding in inbox:
-        if st.checkbox(f"{finding['agent']} - {finding['timestamp']}", key=f"finding_{finding['timestamp']}"):
-            selected_findings.append(finding)
-    
-    if selected_findings:
-        if st.button("Generate Content"):
-            with st.spinner("Generating content..."):
-                # Generate content for selected findings
-                generated_content = content_generator.generate_batch_content(selected_findings)
-                
-                # Display generated content
-                st.subheader("Generated Content")
-                for content in generated_content:
-                    with st.expander(f"Content for {content['agent']}"):
-                        st.write("**Title:**")
-                        st.write(content['title'])
-                        st.write("**Content:**")
-                        st.write(content['content'])
-                        st.write("**Hashtags:**")
-                        st.write(content['hashtags'])
-                        st.write("**Call to Action:**")
-                        st.write(content['cta'])
-                        
-                        # Post content section
-                        st.subheader("Post Content")
-                        platforms = st.multiselect(
-                            "Select platforms to post to",
-                            ["Twitter", "LinkedIn", "Facebook"],
-                            key=f"platforms_{content['agent']}_{content['timestamp']}"
-                        )
-                        
-                        if platforms and st.button("Post Content", key=f"post_{content['agent']}_{content['timestamp']}"):
-                            with st.spinner("Posting content..."):
-                                result = content_poster.post_content(content, platforms)
-                                if result['success']:
-                                    st.success("Content posted successfully!")
-                                else:
-                                    st.error(f"Error posting content: {result['error']}")
+    if st.button("Generate Content"):
+        with st.spinner("Generating content..."):
+            # Generate content for selected findings
+            generated_content = content_generator.generate_batch_content(inbox)
+            
+            # Display generated content
+            st.subheader("Generated Content")
+            for content in generated_content:
+                with st.expander(f"Content for {content['agent']}"):
+                    st.write("**Title:**")
+                    st.write(content['title'])
+                    st.write("**Content:**")
+                    st.write(content['content'])
+                    st.write("**Hashtags:**")
+                    st.write(content['hashtags'])
+                    st.write("**Call to Action:**")
+                    st.write(content['cta'])
+                    
+                    # Post content section
+                    st.subheader("Post Content")
+                    platforms = st.multiselect(
+                        "Select platforms to post to",
+                        ["Twitter", "LinkedIn", "Facebook"],
+                        key=f"platforms_{content['agent']}_{content['timestamp']}"
+                    )
+                    
+                    if platforms and st.button("Post Content", key=f"post_{content['agent']}_{content['timestamp']}"):
+                        with st.spinner("Posting content..."):
+                            result = content_poster.post_content(content, platforms)
+                            if result['success']:
+                                st.success("Content posted successfully!")
+                            else:
+                                st.error(f"Error posting content: {result['error']}")
 else:
     st.info("No agent findings available. Run some agents first to generate content.")
 
