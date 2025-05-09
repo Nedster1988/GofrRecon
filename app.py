@@ -252,6 +252,34 @@ st.markdown("""
         background-color: #1e1e1e !important;
         color: #f5f5f5 !important;
     }
+
+    /* Fix unreadable article text inside summary boxes */
+    div[data-testid="stMarkdownContainer"] p,
+    div[data-testid="stMarkdownContainer"] span,
+    div[data-testid="stMarkdownContainer"] li {
+        color: #1e1e1e !important;  /* High-contrast dark gray */
+    }
+
+    /* Fix Streamlit dropdown and menu contrast */
+    div[role="menu"], div[role="menu"] * {
+        background-color: #1e1e1e !important;
+        color: #f5f5f5 !important;
+    }
+
+    /* Sidebar input contrast fix */
+    section[data-testid="stSidebar"] input,
+    section[data-testid="stSidebar"] textarea,
+    section[data-testid="stSidebar"] select {
+        background-color: #f0f0f0 !important;
+        color: #1e1e1e !important;
+    }
+
+    /* Sidebar labels */
+    section[data-testid="stSidebar"] label, 
+    section[data-testid="stSidebar"] span,
+    section[data-testid="stSidebar"] div {
+        color: #eaeaea;
+    }
     </style>
 """, unsafe_allow_html=True)
 
