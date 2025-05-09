@@ -151,7 +151,7 @@ st.markdown("""
         color: #fff !important;
     }
     .modern-card, .modern-card * {
-        color: #111 !important;
+        color: #000 !important;
     }
     .modern-card {
         background: rgba(13,42,107,0.90);
