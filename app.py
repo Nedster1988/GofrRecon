@@ -161,6 +161,9 @@ st.markdown("""
         margin-bottom: 2.2rem;
         border: none;
     }
+    .modern-card a, .modern-card a:visited, .modern-card a:hover {
+        color: #000 !important;
+    }
     .modern-card-empty {
         background: rgba(26,26,61,0.90);
         border-radius: 1.2rem;
