@@ -102,6 +102,14 @@ st.markdown("""
         padding: 2rem 1.5rem 1.5rem 1.5rem;
         margin-bottom: 1.5rem;
     }
+    /* Sidebar text contrast fix */
+    [data-testid="stSidebar"] .sidebar-content, [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3, [data-testid="stSidebar"] h4, [data-testid="stSidebar"] h5, [data-testid="stSidebar"] h6, [data-testid="stSidebar"] .stMarkdown, [data-testid="stSidebar"] .stText, [data-testid="stSidebar"] label, [data-testid="stSidebar"] .stExpanderHeader {
+        color: #111827 !important;
+        font-weight: 700 !important;
+    }
+    [data-testid="stSidebar"] .stMarkdown p, [data-testid="stSidebar"] .stText, [data-testid="stSidebar"] label {
+        font-weight: 500 !important;
+    }
     .stButton>button, .stForm button {
         border-radius: 9999px;
         font-weight: 600;
