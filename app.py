@@ -195,9 +195,27 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Header
-st.markdown('<div class="modern-header">🧠 Gofr Recon</div>', unsafe_allow_html=True)
-st.markdown('<div class="modern-subheader">Real-time news intelligence and analysis</div>', unsafe_allow_html=True)
+# Logo at the top of the main app
+st.markdown(
+    """
+    <div style='display: flex; align-items: center; margin-bottom: 1.5rem;'>
+        <img src='assets/logo.png' width='48' style='margin-right: 1rem;'/>
+        <span style='font-size:2.2rem;font-weight:700;color:#374151;'>Gofr Recon</span>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+# Logo in the sidebar
+st.sidebar.markdown(
+    """
+    <div style='display: flex; align-items: center; margin-bottom: 1.5rem;'>
+        <img src='assets/logo.png' width='36' style='margin-right: 0.75rem;'/>
+        <span style='font-size:1.5rem;font-weight:700;color:#374151;'>Gofr Recon</span>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 # Sidebar (Agent Input Panel)
 with st.sidebar:
