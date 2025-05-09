@@ -389,13 +389,18 @@ st.markdown("---")
 st.markdown("Gofr Recon | Powered by Streamlit and OpenAI")
 
 def run_scheduler():
+    def agent_task_if_enabled(agent):
+        agents = load_agents()
+        for a in agents:
+            if a['name'] == agent['name'] and a.get('enabled'):
+                agent_task(a)
+                break
     agents = load_agents()
     for agent in agents:
-        if agent.get('enabled'):
-            if agent.get('frequency_minutes', 0) > 0:
-                schedule.every(int(agent['frequency_minutes'])).minutes.do(agent_task, agent)
-            elif agent.get('frequency_hours', 0) > 0:
-                schedule.every(int(agent['frequency_hours'])).hours.do(agent_task, agent)
+        if agent.get('frequency_minutes', 0) > 0:
+            schedule.every(int(agent['frequency_minutes'])).minutes.do(agent_task_if_enabled, agent)
+        elif agent.get('frequency_hours', 0) > 0:
+            schedule.every(int(agent['frequency_hours'])).hours.do(agent_task_if_enabled, agent)
     while True:
         schedule.run_pending()
         time.sleep(60)
