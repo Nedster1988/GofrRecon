@@ -68,8 +68,16 @@ from ai.summarizer import summarize_news
 from utils.deduplicate import deduplicate_stories
 from sources.news_manager import NewsSourceManager
 
+# Import new modules
+from ai.content_generator import ContentGenerator
+from utils.content_poster import ContentPoster
+
 # Initialize news source manager
 news_manager = NewsSourceManager()
+
+# Initialize content generator and poster
+content_generator = ContentGenerator()
+content_poster = ContentPoster(Config())
 
 # Set page configuration
 st.set_page_config(
@@ -199,7 +207,6 @@ with st.sidebar:
         agent_keywords = st.text_input("Keywords (comma-separated)")
         agent_frequency_min = st.number_input("Frequency (minutes)", min_value=0, max_value=1440, value=0, help="Set to 0 to disable minute-based scheduling.")
         agent_frequency_hr = st.number_input("Frequency (hours)", min_value=0, max_value=168, value=6, help="Set to 0 to disable hour-based scheduling.")
-        agent_enabled = st.checkbox("Enabled", value=True)
         if st.form_submit_button("Add Agent"):
             new_agent = {
                 "name": agent_name,
@@ -207,7 +214,7 @@ with st.sidebar:
                 "keywords": [k.strip() for k in agent_keywords.split(",") if k.strip()],
                 "frequency_minutes": int(agent_frequency_min),
                 "frequency_hours": int(agent_frequency_hr),
-                "enabled": agent_enabled
+                "enabled": True  # New agents are enabled by default
             }
             agents.append(new_agent)
             save_agents(agents)
@@ -217,17 +224,23 @@ with st.sidebar:
     st.subheader("Existing Agents")
     if agents:
         for idx, agent in enumerate(agents):
-            st.markdown(f"**{agent['name']}** | Categories: {', '.join(agent.get('categories', [agent.get('category', 'unknown')]))} | Every {agent['frequency_hours']}h | {'Enabled' if agent['enabled'] else 'Disabled'}")
-            st.markdown(f"Keywords: {', '.join(agent['keywords']) if agent['keywords'] else 'None'}")
-            col1, col2 = st.columns(2)
+            col1, col2, col3 = st.columns([3, 1, 1])
             with col1:
-                if st.button(f"Delete", key=f"delete_agent_{idx}"):
+                st.markdown(f"**{agent['name']}** | Categories: {', '.join(agent.get('categories', [agent.get('category', 'unknown')]))} | Every {agent['frequency_hours']}h")
+                st.markdown(f"Keywords: {', '.join(agent['keywords']) if agent['keywords'] else 'None'}")
+            with col2:
+                if st.button("🔄" if agent['enabled'] else "⏸️", key=f"toggle_agent_{idx}", help="Toggle agent status"):
+                    agents[idx]['enabled'] = not agents[idx]['enabled']
+                    save_agents(agents)
+                    st.success(f"Agent {'enabled' if agents[idx]['enabled'] else 'disabled'}!")
+                    st.rerun()
+            with col3:
+                if st.button("🗑️", key=f"delete_agent_{idx}", help="Delete agent"):
                     agents.pop(idx)
                     save_agents(agents)
                     st.success("Agent deleted!")
                     st.rerun()
-            with col2:
-                pass  # Placeholder for future edit functionality
+            st.markdown("---")
     else:
         st.info("No agents configured yet.")
 
@@ -258,6 +271,79 @@ if inbox:
         st.markdown("---")
 else:
     st.info("No agent findings yet.")
+
+# Add Content Generation section after Agent Inbox section
+st.markdown("---")
+st.header("Content Generation")
+
+# Load agent inbox
+try:
+    with open(INBOX_PATH, "r") as f:
+        inbox = json.load(f)
+except Exception:
+    inbox = []
+
+if inbox:
+    st.subheader("Agent Findings")
+    
+    # Select agent findings to generate content from
+    selected_findings = []
+    for finding in inbox:
+        if st.checkbox(f"{finding['agent']} - {finding['timestamp']}", key=f"finding_{finding['timestamp']}"):
+            selected_findings.append(finding)
+    
+    if selected_findings:
+        if st.button("Generate Content"):
+            with st.spinner("Generating content..."):
+                # Generate content for selected findings
+                generated_content = content_generator.generate_batch_content(selected_findings)
+                
+                # Display generated content
+                st.subheader("Generated Content")
+                for content in generated_content:
+                    with st.expander(f"Content for {content['agent']}"):
+                        st.write("**Title:**")
+                        st.write(content['title'])
+                        st.write("**Content:**")
+                        st.write(content['content'])
+                        st.write("**Hashtags:**")
+                        st.write(content['hashtags'])
+                        st.write("**Call to Action:**")
+                        st.write(content['cta'])
+                        
+                        # Post content section
+                        st.subheader("Post Content")
+                        platforms = st.multiselect(
+                            "Select platforms to post to",
+                            ["Twitter", "LinkedIn", "Facebook"],
+                            key=f"platforms_{content['agent']}"
+                        )
+                        
+                        if platforms and st.button("Post Content", key=f"post_{content['agent']}"):
+                            with st.spinner("Posting content..."):
+                                result = content_poster.post_content(content, platforms)
+                                if result['success']:
+                                    st.success("Content posted successfully!")
+                                else:
+                                    st.error(f"Error posting content: {result['error']}")
+else:
+    st.info("No agent findings available. Run some agents first to generate content.")
+
+# Add Content History section
+st.markdown("---")
+st.header("Posted Content History")
+
+# Display posting history
+history = content_poster.get_posting_history()
+if history:
+    for post in history:
+        with st.expander(f"{post['title']} - {post['timestamp']}"):
+            st.write("**Platforms:**")
+            st.write(", ".join(post['platforms']))
+            st.write("**Content:**")
+            st.write(post['content'])
+else:
+    st.info("No content has been posted yet.")
 
 # Run Recon button
 if st.button("🚀 Run Recon", use_container_width=True):
