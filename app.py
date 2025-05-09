@@ -172,7 +172,7 @@ st.markdown("""
     .modern-header {
         font-size: 2.1rem;
         font-weight: 500;
-        color: #fff;
+        color: #111827;
         margin-bottom: 1.2rem;
         margin-top: 2.2rem;
         letter-spacing: 0.01em;
@@ -180,7 +180,7 @@ st.markdown("""
     .modern-subheader {
         font-size: 1.18rem;
         font-weight: 400;
-        color: #fff;
+        color: #111827;
         margin-bottom: 1.2rem;
         margin-top: 1.2rem;
     }
