@@ -317,10 +317,10 @@ if inbox:
                         platforms = st.multiselect(
                             "Select platforms to post to",
                             ["Twitter", "LinkedIn", "Facebook"],
-                            key=f"platforms_{content['agent']}"
+                            key=f"platforms_{content['agent']}_{content['timestamp']}"
                         )
                         
-                        if platforms and st.button("Post Content", key=f"post_{content['agent']}"):
+                        if platforms and st.button("Post Content", key=f"post_{content['agent']}_{content['timestamp']}"):
                             with st.spinner("Posting content..."):
                                 result = content_poster.post_content(content, platforms)
                                 if result['success']:
