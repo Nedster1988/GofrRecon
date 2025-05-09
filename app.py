@@ -127,6 +127,12 @@ st.markdown("""
         color: #FFFFFF !important;
         box-shadow: 0 4px 16px 0 rgba(0,198,255,0.12);
     }
+    .stButton>button:disabled, .stForm button:disabled {
+        background: #E0E7EF !important;
+        color: #A0AEC0 !important;
+        cursor: not-allowed !important;
+        opacity: 1 !important;
+    }
     .stTextInput>div>input, .stNumberInput>div>input, .stTextArea>div>textarea, .stMultiSelect>div {
         border-radius: 0.75rem;
         border: 2px solid #0057FF !important;
