@@ -93,11 +93,11 @@ st.markdown("""
     <style>
     body, .main, .stApp {
         font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-        background: #1A1A3D;
+        background: #7FBFFF;
         color: #fff;
     }
     .sidebar-content {
-        background: rgba(13,42,107,0.85);
+        background: rgba(13,42,107,0.90);
         border-radius: 1.2rem;
         box-shadow: 0 4px 24px 0 rgba(0,0,0,0.10);
         padding: 2.5rem 1.5rem 2rem 1.5rem;
@@ -116,27 +116,27 @@ st.markdown("""
         font-weight: 500;
         font-size: 1.08rem;
         padding: 0.7rem 2rem;
-        background: linear-gradient(90deg, #7FBFFF 0%, #0072FF 100%);
+        background: #0D2A6B;
         color: #fff;
-        box-shadow: 0 2px 8px 0 rgba(0,198,255,0.08);
+        box-shadow: 0 2px 8px 0 rgba(13,42,107,0.10);
         transition: background 0.2s, box-shadow 0.2s;
         border: none;
     }
     .stButton>button:hover, .stForm button:hover {
-        background: linear-gradient(90deg, #0072FF 0%, #7FBFFF 100%);
-        box-shadow: 0 4px 16px 0 rgba(0,114,255,0.12);
+        background: #1A1A3D;
+        box-shadow: 0 4px 16px 0 rgba(26,26,61,0.12);
     }
     .stTextInput>div>input, .stNumberInput>div>input, .stTextArea>div>textarea, .stMultiSelect>div {
         border-radius: 0.75rem;
         border: none;
-        box-shadow: 0 1px 6px 0 rgba(0,198,255,0.04);
+        box-shadow: 0 1px 6px 0 rgba(13,42,107,0.04);
         padding: 0.6rem 1.1rem;
         background: rgba(26,26,61,0.85);
         color: #fff;
         font-size: 1rem;
     }
     .stTextInput>div>input:focus, .stNumberInput>div>input:focus, .stTextArea>div>textarea:focus {
-        outline: 2px solid #7FBFFF;
+        outline: 2px solid #0D2A6B;
         background: rgba(13,42,107,0.95);
         color: #fff;
     }
@@ -151,7 +151,7 @@ st.markdown("""
         color: #fff !important;
     }
     .modern-card {
-        background: rgba(13,42,107,0.85);
+        background: rgba(13,42,107,0.90);
         border-radius: 1.2rem;
         box-shadow: 0 4px 24px 0 rgba(0,0,0,0.10);
         padding: 2rem 1.5rem 1.5rem 1.5rem;
@@ -160,7 +160,7 @@ st.markdown("""
         color: #fff;
     }
     .modern-card-empty {
-        background: rgba(26,26,61,0.85);
+        background: rgba(26,26,61,0.90);
         border-radius: 1.2rem;
         border: none;
         color: #fff;
@@ -196,19 +196,19 @@ st.markdown("""
         color: #fff;
     }
     .modern-btn-clear {
-        background: rgba(127,191,255,0.18);
+        background: #0D2A6B;
         color: #fff;
         border-radius: 9999px;
         font-weight: 400;
         font-size: 1.08rem;
         padding: 0.7rem 2rem;
         border: none;
-        box-shadow: 0 2px 8px 0 rgba(0,87,255,0.08);
+        box-shadow: 0 2px 8px 0 rgba(13,42,107,0.08);
         transition: background 0.2s, box-shadow 0.2s;
     }
     .modern-btn-clear:hover {
-        background: rgba(127,191,255,0.28);
-        box-shadow: 0 4px 16px 0 rgba(0,87,255,0.10);
+        background: #1A1A3D;
+        box-shadow: 0 4px 16px 0 rgba(26,26,61,0.10);
     }
     a, a:visited {
         color: #fff !important;
