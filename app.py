@@ -88,75 +88,139 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for better styling
+# Custom CSS for Tailwind-style modern UI
 st.markdown("""
     <style>
-    .main {
-        padding: 2rem;
+    body, .main, .stApp {
+        font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+        background: #f6f7fa;
     }
-    .stApp {
-        max-width: 1200px;
-        margin: 0 auto;
+    .sidebar-content {
+        background: #fff;
+        border-radius: 1rem;
+        box-shadow: 0 2px 16px 0 rgba(0,0,0,0.06);
+        padding: 2rem 1.5rem 1.5rem 1.5rem;
+        margin-bottom: 1.5rem;
     }
-    .stButton>button {
-        width: 100%;
-        background-color: #4CAF50;
-        color: white;
-        padding: 1rem;
-        font-size: 1.2rem;
-        border-radius: 5px;
+    .stButton>button, .stForm button {
+        border-radius: 9999px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        padding: 0.75rem 2rem;
+        background: linear-gradient(90deg, #6366f1 0%, #60a5fa 100%);
+        color: #fff;
+        box-shadow: 0 2px 8px 0 rgba(99,102,241,0.10);
+        transition: background 0.2s, box-shadow 0.2s;
         border: none;
-        margin: 1rem 0;
     }
-    .stButton>button:hover {
-        background-color: #45a049;
+    .stButton>button:hover, .stForm button:hover {
+        background: linear-gradient(90deg, #60a5fa 0%, #6366f1 100%);
+        box-shadow: 0 4px 16px 0 rgba(99,102,241,0.18);
     }
-    .news-card {
-        background-color: #f8f9fa;
-        border-radius: 5px;
-        padding: 1rem;
-        margin: 1rem 0;
+    .stTextInput>div>input, .stNumberInput>div>input, .stTextArea>div>textarea, .stMultiSelect>div {
+        border-radius: 0.75rem;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 1px 4px 0 rgba(0,0,0,0.03);
+        padding: 0.5rem 1rem;
+        background: #f9fafb;
+        font-size: 1rem;
+    }
+    .stTextInput>div>input:focus, .stNumberInput>div>input:focus, .stTextArea>div>textarea:focus {
+        border-color: #6366f1;
+        outline: none;
+        background: #fff;
+    }
+    .stCheckbox>label {
+        font-size: 1rem;
+        font-weight: 500;
+    }
+    .stExpanderHeader {
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+    .modern-card {
+        background: #fff;
+        border-radius: 1rem;
+        box-shadow: 0 2px 16px 0 rgba(0,0,0,0.06);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        border: 1px solid #e5e7eb;
+    }
+    .modern-card-empty {
+        background: #f3f4f6;
+        border-radius: 1rem;
+        border: 1px solid #e5e7eb;
+        color: #6b7280;
+        padding: 2rem;
+        text-align: center;
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+    }
+    .modern-header {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #374151;
+        margin-bottom: 0.5rem;
+    }
+    .modern-subheader {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #6366f1;
+        margin-bottom: 1rem;
+    }
+    .modern-icon {
+        margin-right: 0.5rem;
+        vertical-align: middle;
+    }
+    .modern-btn-icon {
+        margin-right: 0.5rem;
+        vertical-align: middle;
+        font-size: 1.2rem;
+    }
+    .modern-btn-clear {
+        background: linear-gradient(90deg, #f87171 0%, #fbbf24 100%);
+        color: #fff;
+        border-radius: 9999px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        padding: 0.75rem 2rem;
+        border: none;
+        box-shadow: 0 2px 8px 0 rgba(251,191,36,0.10);
+        transition: background 0.2s, box-shadow 0.2s;
+    }
+    .modern-btn-clear:hover {
+        background: linear-gradient(90deg, #fbbf24 0%, #f87171 100%);
+        box-shadow: 0 4px 16px 0 rgba(251,191,36,0.18);
     }
     </style>
 """, unsafe_allow_html=True)
 
 # Header
-st.title("🧠 Gofr Recon")
-st.markdown("Real-time news intelligence and analysis")
+st.markdown('<div class="modern-header">🧠 Gofr Recon</div>', unsafe_allow_html=True)
+st.markdown('<div class="modern-subheader">Real-time news intelligence and analysis</div>', unsafe_allow_html=True)
 
-# Sidebar
+# Sidebar (Agent Input Panel)
 with st.sidebar:
+    st.markdown('<div class="sidebar-content">', unsafe_allow_html=True)
     st.header("Configuration")
-    
-    # Date range selector
     date_range = st.date_input(
         "Select Date Range",
         value=(datetime.now() - timedelta(days=1), datetime.now()),
         max_value=datetime.now()
     )
-    
-    # News source management
     st.subheader("News Sources")
-    
-    # Get all categories
     all_categories = news_manager.get_all_categories()
-    
-    # Display category checkboxes
     selected_categories = []
     for category_id, info in all_categories.items():
         if st.checkbox(f"{info['name']} ({category_id})", value=True):
             selected_categories.append(category_id)
-    
-    # Add new category
     st.markdown("---")
     st.subheader("Add New Category")
-    
     with st.form("add_category"):
         new_category_id = st.text_input("Category ID (e.g., 'finance')")
         new_category_name = st.text_input("Category Name (e.g., 'Finance News')")
         new_category_desc = st.text_area("Description")
         new_feeds = st.text_area("RSS Feeds (one per line)")
-        
         if st.form_submit_button("Add Category"):
             if new_category_id and new_category_name and new_feeds:
                 feeds_list = [feed.strip() for feed in new_feeds.split('\n') if feed.strip()]
@@ -168,16 +232,12 @@ with st.sidebar:
                 )
                 st.success("Category added successfully!")
                 st.rerun()
-    
-    # Manage existing categories
     st.markdown("---")
     st.subheader("Manage Categories")
-    
     for category_id, info in all_categories.items():
         with st.expander(f"Edit {info['name']}"):
             current_feeds = "\n".join(info['feeds'])
             new_feeds = st.text_area("RSS Feeds", current_feeds, key=f"edit_{category_id}")
-            
             col1, col2 = st.columns(2)
             with col1:
                 if st.button("Update", key=f"update_{category_id}"):
@@ -185,23 +245,18 @@ with st.sidebar:
                     news_manager.update_category_feeds(category_id, feeds_list)
                     st.success("Category updated!")
                     st.rerun()
-            
             with col2:
                 if category_id in (news_manager.config.get("custom_categories") or {}):
                     if st.button("Delete", key=f"delete_{category_id}"):
                         news_manager.remove_custom_category(category_id)
                         st.success("Category deleted!")
                         st.rerun()
-    
     st.markdown("---")
     st.markdown("### About")
     st.markdown("Gofr Recon provides real-time news intelligence and analysis using AI-powered summarization.")
-
     st.markdown("---")
     st.header("Recon Agents")
-
     agents = load_agents()
-
     with st.form("add_agent_form"):
         agent_name = st.text_input("Agent Name")
         agent_categories = st.multiselect("Categories", list(all_categories.keys()))
@@ -215,13 +270,12 @@ with st.sidebar:
                 "keywords": [k.strip() for k in agent_keywords.split(",") if k.strip()],
                 "frequency_minutes": int(agent_frequency_min),
                 "frequency_hours": int(agent_frequency_hr),
-                "enabled": True  # New agents are enabled by default
+                "enabled": True
             }
             agents.append(new_agent)
             save_agents(agents)
             st.success("Agent added!")
             st.rerun()
-
     st.subheader("Existing Agents")
     if agents:
         for idx, agent in enumerate(agents):
@@ -244,181 +298,157 @@ with st.sidebar:
             st.markdown("---")
     else:
         st.info("No agents configured yet.")
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # Main content area
-st.header("News Intelligence Dashboard")
+st.markdown('<div class="modern-header" style="margin-top:1.5rem;">📊 News Intelligence Dashboard</div>', unsafe_allow_html=True)
 
 # Agent Inbox Section
-st.subheader("Agent Inbox")
+st.markdown('<div class="modern-subheader">Agent Inbox</div>', unsafe_allow_html=True)
 
-if st.button("Run Agents Now", use_container_width=True):
-    agents = load_agents()
-    for agent in agents:
-        if agent.get('enabled'):
-            agent_task(agent)
-    st.success("All enabled agents have run.")
-    st.rerun()
+run_agents_col, clear_col = st.columns([2, 2])
+with run_agents_col:
+    if st.button("<span class='modern-btn-icon'>▶️</span> Run Agents Now", key="run_agents_btn", help="Run all enabled agents now", use_container_width=True):
+        agents = load_agents()
+        for agent in agents:
+            if agent.get('enabled'):
+                agent_task(agent)
+        st.success("All enabled agents have run.")
+        st.rerun()
 
+# Show agent inbox in modern cards
 try:
     with open(INBOX_PATH, "r") as f:
         inbox = json.load(f)
 except Exception:
     inbox = []
+
 if inbox:
     for entry in reversed(inbox[-10:]):  # Show last 10 agent runs
-        st.markdown(f"**Agent:** {entry['agent']} | **Categories:** {', '.join(entry.get('categories', [entry.get('category', 'unknown')]))} | **Time:** {entry['timestamp']}")
+        st.markdown(f"<div class='modern-card'>", unsafe_allow_html=True)
+        st.markdown(f"<span style='font-weight:600;font-size:1.1rem;'>🕵️‍♂️ Agent:</span> <span style='font-weight:500;'>{entry['agent']}</span> | <span style='font-weight:600;'>Categories:</span> <span style='font-weight:500;'>{', '.join(entry.get('categories', [entry.get('category', 'unknown')]))}</span> | <span style='font-weight:600;'>Time:</span> <span style='font-weight:500;'>{entry['timestamp']}</span>", unsafe_allow_html=True)
         for article in entry['results'][:3]:  # Show up to 3 articles per run
-            st.markdown(f"- [{article['title']}]({article['url']})")
-        st.markdown("---")
+            st.markdown(f"<div style='margin-left:1rem;'><span style='font-weight:600;'>•</span> <a href='{article['url']}' target='_blank' style='color:#6366f1;text-decoration:none;font-weight:500;'>{article['title']}</a></div>", unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
 else:
-    st.info("No agent findings yet.")
+    st.markdown("<div class='modern-card-empty'>No agent findings yet. Run an agent to see results here.</div>", unsafe_allow_html=True)
 
-# Add Content Generation section after Agent Inbox section
+# Content Generation section
 st.markdown("---")
-st.header("Content Generation")
+st.markdown('<div class="modern-header">📝 Content Generation</div>', unsafe_allow_html=True)
 
-# Load agent inbox
+# Load agent inbox (again for content generation)
 try:
     with open(INBOX_PATH, "r") as f:
         inbox = json.load(f)
 except Exception:
     inbox = []
 
-# Handle deletion of individual findings
-if 'delete_finding' not in st.session_state:
-    st.session_state['delete_finding'] = None
-if 'clear_inbox' not in st.session_state:
-    st.session_state['clear_inbox'] = False
-
-def save_inbox(new_inbox):
-    with open(INBOX_PATH, "w") as f:
-        json.dump(new_ins, f)
-
-# UI for clearing all findings
-col_clear, col_spacer = st.columns([1, 9])
+col_clear, col_spacer = st.columns([2, 8])
 with col_clear:
-    if st.button("🗑️ Clear All Agent Findings", key="clear_all_findings"):
-        st.session_state['clear_inbox'] = True
+    if st.button("<span class='modern-btn-icon'>🗑️</span> Clear All Agent Findings", key="clear_all_findings2", use_container_width=True):
         with open(INBOX_PATH, "w") as f:
             json.dump([], f)
         st.success("All agent findings deleted.")
         st.rerun()
 
 if inbox:
-    st.subheader("Agent Findings")
-    # Show each finding in a card with a delete button
+    st.markdown('<div class="modern-subheader">Agent Findings</div>', unsafe_allow_html=True)
     for idx, finding in enumerate(inbox):
-        with st.container():
-            st.markdown(f"<div style='background-color:#f8f9fa; border-radius:8px; padding:1rem; margin-bottom:1rem;'>", unsafe_allow_html=True)
-            st.write(f"**Agent:** {finding['agent']} | **Categories:** {', '.join(finding.get('categories', []))} | **Time:** {finding['timestamp']}")
-            st.write(f"**Articles:** {len(finding['results'])}")
-            del_col, sel_col = st.columns([1, 9])
-            with del_col:
-                if st.button("🗑️ Delete", key=f"delete_finding_{idx}"):
-                    st.session_state['delete_finding'] = idx
-            st.markdown("</div>", unsafe_allow_html=True)
-    # Handle deletion
-    if st.session_state['delete_finding'] is not None:
-        del inbox[st.session_state['delete_finding']]
-        with open(INBOX_PATH, "w") as f:
-            json.dump(inbox, f)
-        st.session_state['delete_finding'] = None
-        st.success("Agent finding deleted.")
-        st.rerun()
-    
-    if st.button("Generate Content"):
+        st.markdown(f"<div class='modern-card'>", unsafe_allow_html=True)
+        st.write(f"**Agent:** {finding['agent']} | **Categories:** {', '.join(finding.get('categories', []))} | **Time:** {finding['timestamp']}")
+        st.write(f"**Articles:** {len(finding['results'])}")
+        del_col, sel_col = st.columns([1, 9])
+        with del_col:
+            if st.button("🗑️ Delete", key=f"delete_finding_{idx}_cg"):
+                del inbox[idx]
+                with open(INBOX_PATH, "w") as f:
+                    json.dump(inbox, f)
+                st.success("Agent finding deleted.")
+                st.rerun()
+        st.markdown("</div>", unsafe_allow_html=True)
+    if st.button("<span class='modern-btn-icon'>✨</span> Generate Content", key="generate_content_btn", use_container_width=True):
         with st.spinner("Generating content..."):
-            # Generate content for selected findings
             generated_content = content_generator.generate_batch_content(inbox)
-            
-            # Display generated content
-            st.subheader("Generated Content")
+            st.markdown('<div class="modern-subheader">Generated Content</div>', unsafe_allow_html=True)
             for content in generated_content:
-                with st.expander(f"Content for {content['agent']}"):
-                    st.write("**Title:**")
-                    st.write(content['title'])
-                    st.write("**Content:**")
-                    st.write(content['content'])
-                    st.write("**Hashtags:**")
-                    st.write(content['hashtags'])
-                    st.write("**Call to Action:**")
-                    st.write(content['cta'])
-                    
-                    # Post content section
-                    st.subheader("Post Content")
-                    platforms = st.multiselect(
-                        "Select platforms to post to",
-                        ["Twitter", "LinkedIn", "Facebook"],
-                        key=f"platforms_{content['agent']}_{content['timestamp']}"
-                    )
-                    
-                    if platforms and st.button("Post Content", key=f"post_{content['agent']}_{content['timestamp']}"):
-                        with st.spinner("Posting content..."):
-                            result = content_poster.post_content(content, platforms)
-                            if result['success']:
-                                st.success("Content posted successfully!")
-                            else:
-                                st.error(f"Error posting content: {result['error']}")
+                st.markdown(f"<div class='modern-card'>", unsafe_allow_html=True)
+                st.write("**Title:**")
+                st.write(content['title'])
+                st.write("**Content:**")
+                st.write(content['content'])
+                st.write("**Hashtags:**")
+                st.write(content['hashtags'])
+                st.write("**Call to Action:**")
+                st.write(content['cta'])
+                st.markdown("---")
+                st.subheader("Post Content")
+                platforms = st.multiselect(
+                    "Select platforms to post to",
+                    ["Twitter", "LinkedIn", "Facebook"],
+                    key=f"platforms_{content['agent']}_{content['timestamp']}"
+                )
+                if platforms and st.button("<span class='modern-btn-icon'>📤</span> Post Content", key=f"post_{content['agent']}_{content['timestamp']}", use_container_width=True):
+                    with st.spinner("Posting content..."):
+                        result = content_poster.post_content(content, platforms)
+                        if result['success']:
+                            st.success("Content posted successfully!")
+                        else:
+                            st.error(f"Error posting content: {result['error']}")
+                st.markdown("</div>", unsafe_allow_html=True)
 else:
-    st.info("No agent findings available. Run some agents first to generate content.")
+    st.markdown("<div class='modern-card-empty'>No agent findings available. Run some agents first to generate content.</div>", unsafe_allow_html=True)
 
-# Add Content History section
+# Content History section
 st.markdown("---")
-st.header("Posted Content History")
+st.markdown('<div class="modern-header">📚 Posted Content History</div>', unsafe_allow_html=True)
 
-# Display posting history
 history = content_poster.get_posting_history()
 if history:
     for post in history:
-        with st.expander(f"{post['title']} - {post['timestamp']}"):
-            st.write("**Platforms:**")
-            st.write(", ".join(post['platforms']))
-            st.write("**Content:**")
-            st.write(post['content'])
+        st.markdown(f"<div class='modern-card'>", unsafe_allow_html=True)
+        st.write("**Title:**")
+        st.write(post.get('title', ''))
+        st.write("**Platforms:**")
+        st.write(", ".join(post.get('platforms', [])))
+        st.write("**Content:**")
+        st.write(post.get('content', ''))
+        st.markdown("</div>", unsafe_allow_html=True)
 else:
-    st.info("No content has been posted yet.")
+    st.markdown("<div class='modern-card-empty'>No content has been posted yet.</div>", unsafe_allow_html=True)
 
 # Run Recon button
-if st.button("🚀 Run Recon", use_container_width=True):
+st.markdown("<div style='margin:2rem 0; text-align:center;'>", unsafe_allow_html=True)
+if st.button("<span class='modern-btn-icon'>🚀</span> Run Recon", key="run_recon_btn", use_container_width=True):
     with st.spinner("Gathering and analyzing news..."):
         try:
-            # Fetch news from selected categories
             articles = fetch_news(
                 sources=selected_categories,
                 start_date=datetime.combine(date_range[0], datetime.min.time()),
                 end_date=datetime.combine(date_range[1], datetime.max.time())
             )
-            
-            # Deduplicate stories
             unique_stories = deduplicate_stories(articles)
-            
-            # Summarize news
             summarized_news = summarize_news(unique_stories)
-            
-            # Display results
             st.success(f"✅ Analysis complete! Found {len(summarized_news)} unique articles.")
-            
-            # Display summarized news in cards
             for story in summarized_news:
-                with st.container():
-                    st.markdown(f"""
-                    <div class="news-card">
-                        <h3>{story['title']}</h3>
-                        <p><strong>Source:</strong> {story['source']}</p>
-                        <p><strong>Published:</strong> {story['published']}</p>
-                        <p><strong>Category:</strong> {story['category']}</p>
-                        <p><strong>Preview:</strong> {story.get('content', '')[:200]}...</p>
-                        <p>{story['summary']}</p>
-                        <a href="{story['url']}" target="_blank">Read more</a>
-                    </div>
-                    """, unsafe_allow_html=True)
-                    
+                st.markdown(f"""
+                <div class='modern-card'>
+                    <h3 style='font-size:1.2rem;font-weight:600;color:#374151;'>{story['title']}</h3>
+                    <p><strong>Source:</strong> {story['source']}</p>
+                    <p><strong>Published:</strong> {story['published']}</p>
+                    <p><strong>Category:</strong> {story['category']}</p>
+                    <p><strong>Preview:</strong> {story.get('content', '')[:200]}...</p>
+                    <p>{story['summary']}</p>
+                    <a href="{story['url']}" target="_blank" style="color:#6366f1;">Read more</a>
+                </div>
+                """, unsafe_allow_html=True)
         except Exception as e:
             st.error(f"An error occurred: {str(e)}")
+st.markdown("</div>", unsafe_allow_html=True)
 
 # Footer
 st.markdown("---")
-st.markdown("Gofr Recon | Powered by Streamlit and OpenAI")
+st.markdown("<div style='text-align:center;color:#6b7280;font-size:1rem;'>Gofr Recon | Powered by Streamlit and OpenAI</div>", unsafe_allow_html=True)
 
 def run_scheduler():
     def agent_task_if_enabled(agent):
